@@ -13,6 +13,7 @@ class Playerinfo extends Required {
 		$this->load->model('location_model');
 		$this->load->model('status_model');
 		$this->load->model('prefix_model');
+		$this->load->model('format_time_model');
 	}
 	public function index() {
 		$data['player_data'] = $this->player_model->getAll();
@@ -30,7 +31,7 @@ class Playerinfo extends Required {
 				$InputPrefix = $_POST['InputPrefix'];
 				$InputName = $_POST['InputName'];
 				$InputSex = $_POST['InputSex'];
-				$InputBirthDay = $_POST['InputBirthDay'];
+				$InputBirthDay = $this->format_time_model->BEtoCE($_POST['InputBirthDay']);
 				$InputTel = $_POST['InputTel'];
 				$InputAddress = $_POST['InputAddress'];
 				$InputProvince = $_POST['InputProvince'];
@@ -62,7 +63,7 @@ class Playerinfo extends Required {
 				$InputPrefix = $_POST['InputPrefix'];
 				$InputName = $_POST['InputName'];
 				$InputSex = $_POST['InputSex'];
-				$InputBirthDay = $_POST['InputBirthDay'];
+				$InputBirthDay = $this->format_time_model->BEtoCE($_POST['InputBirthDay']);
 				$InputTel = $_POST['InputTel'];
 				$InputAddress = $_POST['InputAddress'];
 				$InputProvince = $_POST['InputProvince'];
@@ -94,6 +95,7 @@ class Playerinfo extends Required {
 	}
 	public function editPlayer($id) {
 		$data['player_data'] = $this->player_model->getById($id)->row_array();
+		$data['player_data']['player_birthdate'] = $this->format_time_model->CEtoBE($data['player_data']['player_birthdate']);
 		$data['chosen_province'] = $this->location_model->getProvince();
 		$data['chosen_status'] = $this->status_model->getAll();
 		$data['chosen_prefix'] = $this->prefix_model->getAll();
@@ -154,6 +156,7 @@ class Playerinfo extends Required {
 	}
 	public function player_profile($id){
 		$data['player_data'] = $this->player_model->getById($id)->row_array();
+		$data['player_data']['player_birthdate'] = $this->format_time_model->formatToText($data['player_data']['player_birthdate']);
 		// ..... get history
 		$this->render('player/profile', $data);
 	}

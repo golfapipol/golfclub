@@ -214,7 +214,6 @@ class Ums extends Required {
 		echo '/> <i class="fa fa-fw big female">&#9792; </i><p style="display:none">F</p> ˭ԧ</label>';
 	} 
 	public function get_userinfo($id = '0') {
-		
 		$this->load->model('user_model');
 		$this->load->model('group_model');
 		$actor_select = $this->group_model->getAll();

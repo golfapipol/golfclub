@@ -61,7 +61,8 @@ class Player_model extends MyModel {
 				FROM player 
 				INNER JOIN player_info ON player.player_id = player_info.player_id 
 				INNER JOIN status ON status.status_id = player.status_id 
-				INNER JOIN prefix ON player.prefix_id = prefix.prefix_id ";
+				INNER JOIN prefix ON player.prefix_id = prefix.prefix_id 
+				ORDER BY (player.player_id)";
 		$query = $this->db->query($sql);
 		return $query;
 	}
@@ -83,6 +84,25 @@ class Player_model extends MyModel {
 												WHERE tour_id = ? )";
 		$query = $this->db->query($sql,array($tourid));
 		return $query;
+	}
+	public function import($id, $player_name, $player_sex, $player_birthdate, $player_last_hc, $prefix_id, $status_id) {
+		$sql = "INSERT INTO player (player_id,
+									player_name,
+									player_sex,
+									player_birthdate,
+									player_last_hc,
+									prefix_id,
+									status_id) 
+					VALUE( ?, ? , ? , ? , ? , ? , ?)";
+		$this->db->query($sql, array($id,
+									$player_name,
+									$player_sex,
+									$player_birthdate,
+									$player_last_hc,
+									$prefix_id,
+									$status_id));
+		$this->last_insert_id = $this->db->insert_id();
+		return $this->last_insert_id;
 	}
 }
 

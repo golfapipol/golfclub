@@ -11,7 +11,7 @@
 <!-- Chosen -->
 <script src="<?php echo base_url();?>js/plugins/chosen/chosen.jquery.min.js" type="text/javascript"></script>
 <!-- date-picker -->
-<script src="<?php echo base_url();?>js/plugins/datepicker/jquery-ui-1.10.4.datepicker.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url();?>js/plugins/datepicker/jquery-ui-1.10.4.datepicker.js" type="text/javascript"></script>
 <!-- date-range-picker -->
 <script src="<?php echo base_url();?>js/plugins/daterangepicker/daterangepicker.js" type="text/javascript"></script>
 <!-- DATA TABES SCRIPT -->

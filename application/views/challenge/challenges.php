@@ -34,7 +34,7 @@
 									
 									$TimeStart = explode("-",$row['tour_startdate']);
 									$TimeEnd = explode("-",$row['tour_enddate']);
-									echo '<td>'.$TimeStart[2]."/".$TimeStart[1]."/".$TimeStart[0].' - '.$TimeEnd[2]."/".$TimeEnd[1]."/".$TimeEnd[0].'</td>';
+									echo '<td>'.$TimeStart[2]."/".$TimeStart[1]."/".(intval($TimeStart[0])+ 543 ).' - '.$TimeEnd[2]."/".$TimeEnd[1]."/".(intval($TimeStart[0])+ 543 ).'</td>';
 									echo '<td>
 										<div class="btn-group">
 											<a class="btn btn-info btn-flat" data-toggle="tooltip" data-original-title="รายละเอียดการแข่งขัน"  href="'.site_url('challenge/tourinfo/'.$row['tour_id']).'"><i class="fa fa-fw fa-info-circle"></i></a>

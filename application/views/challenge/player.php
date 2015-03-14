@@ -11,9 +11,8 @@ th{text-align:center}
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1><?php echo $tournament_data['tour_name'];?>
-		<small><?php $TimeStart = explode("-",$tournament_data['tour_startdate']);
-		$TimeEnd = explode("-",$tournament_data['tour_enddate']);
-		echo '<td>'.$TimeStart[2]."/".$TimeStart[1]."/".$TimeStart[0].' - '.$TimeEnd[2]."/".$TimeEnd[1]."/".$TimeEnd[0].'</td>';?>
+		<small>
+		<?php echo '<td>'.$tournament_data['tour_startdate'].' - '.$tournament_data['tour_enddate'].'</td>';?>
 		</small>
 	</h1>
 	<ol class="breadcrumb">
@@ -272,7 +271,7 @@ th{text-align:center}
 													echo '<tr class="item"><td><input type="checkbox" /></td>';
 													echo '<td><a href="#">'.$row['player_name'].'</a></td>';
 													// cal player age
-													$age = floor((time() - strtotime("1971-11-20")) / (60*60*24*365));
+													$age = ($row['player_birthdate'] != null )? floor((time() - strtotime($row['player_birthdate'])) / (60*60*24*365)): 0;
 													echo '<td>'.$age.'</td>';
 													echo '<td><div class="inline">'.$row['player_last_hc'].'</div><a class="change_hc" onclick="change_hc(this)"><i class="fa fa-edit pull-right" data-toggle="tooltip" data-original-title="เปลี่ยน Handicap"></i></a></td>';
 													if($row['player_sex'] == 1):

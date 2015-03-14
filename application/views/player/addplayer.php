@@ -157,7 +157,41 @@ tr:hover { cursor: pointer;}
 		$('.submit-form').removeAttr('disabled');
 	});
 	$("#InputBirthDay").datepicker({changeMonth: true,
-      changeYear: true,yearRange: '-80:-4',dateFormat: "yy/mm/dd",defaultDate: '1970/01/01' });
+      changeYear: true,yearRange: '-80:-4',dateFormat: "yy/mm/dd",defaultDate: '1985/01/01',
+	  beforeShow:function(){    
+            if($(this).val()!=""){  
+                var arrayDate=$(this).val().split("/");       
+                arrayDate[0]=parseInt(arrayDate[0])-543;  
+                $(this).val(arrayDate[0]+"/"+arrayDate[1]+"/"+arrayDate[2]);  
+            }  
+            setTimeout(function(){  
+                $.each($(".ui-datepicker-year option"),function(j,k){  
+                    var textYear=parseInt($(".ui-datepicker-year option").eq(j).val())+543;  
+                    $(".ui-datepicker-year option").eq(j).text(textYear);  
+                });               
+            },50);  
+        },  
+        onChangeMonthYear: function(){  
+            setTimeout(function(){  
+                $.each($(".ui-datepicker-year option"),function(j,k){  
+                    var textYear=parseInt($(".ui-datepicker-year option").eq(j).val())+543;  
+                    $(".ui-datepicker-year option").eq(j).text(textYear);  
+                });               
+            },50);        
+        },  
+        onClose:function(){  
+            if($(this).val()!="" && $(this).val()==dateBefore){           
+                var arrayDate=dateBefore.split("/");  
+                arrayDate[0]=parseInt(arrayDate[0])+543;  
+                $(this).val(arrayDate[0]+"/"+arrayDate[1]+"/"+arrayDate[2]);      
+            }         
+        },  
+        onSelect: function(dateText, inst){   
+            dateBefore=$(this).val();  
+            var arrayDate=dateText.split("/");  
+            arrayDate[0]=parseInt(arrayDate[0])+543;  
+            $(this).val(arrayDate[0]+"/"+arrayDate[1]+"/"+arrayDate[2]);  
+        }});
 	$(".number-input").keydown(function(e) { 
 	// from http://stackoverflow.com/questions/995183/how-to-allow-only-numeric-0-9-in-html-inputbox-using-jquery
 		// Allow: backspace, delete, tab, escape, enter and . (190)

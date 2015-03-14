@@ -17,6 +17,7 @@ class Challenge extends Required {
 		$this->load->model('tour_team_model');
 		$this->load->model('pairing_model');
 		$this->load->model('score_model');
+		$this->load->model('format_time_model');
 		
 	}
 	public function index() {
@@ -26,6 +27,8 @@ class Challenge extends Required {
 	}
 	public function tourinfo($id) {
 		$data['tournament_data'] = $this->tournament_model->getById($id)->row_array();
+		$data['tournament_data']['tour_startdate'] = $this->format_time_model->formatToText($data['tournament_data']['tour_startdate']);
+		$data['tournament_data']['tour_enddate'] = $this->format_time_model->formatToText($data['tournament_data']['tour_enddate']);
 		$data['field_data'] = $this->field_model->getByClub($data['tournament_data']['club_id']);
 		$data['tour_field_data'] = $this->tour_field_model->getByTourId($data['tournament_data']['tour_id']);
 		$this->render('challenge/tourinfo',$data);
@@ -278,7 +281,7 @@ class Challenge extends Required {
 						echo '<tr class="item"><td><input type="checkbox" /></td>';
 						echo '<td><a href="#">'.$row['player_name'].'</a></td>';
 						// cal player age
-						$age = floor((time() - strtotime($row['player_birthdate'])) / 31556926);
+						$age = ($row['player_birthdate'] != null )? floor((time() - strtotime($row['player_birthdate'])) / (60*60*24*365)): 0;
 						echo '<td>' . $age . '</td>';
 						echo '<td><div class="hc_number">' . $row['player_last_hc'] . '</div><a class="change_hc" onclick="change_hc(this)"><i class="fa fa-edit pull-right" data-toggle="tooltip" data-original-title="เปลี่ยน Handicap"></i></a></td>';
 						if ($row['player_sex'] == 1):

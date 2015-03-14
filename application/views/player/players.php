@@ -82,6 +82,7 @@ tr:hover { cursor: pointer;}
 						<table id="data" class="table table-hover table-bordered">
 							<thead>
 								<tr>
+									<th style="width:10%">รหัสสมาชิก</th>
 									<th style="width:30%">ชื่อ</th>
 									<th style="width:10%">เพศ</th>
 									<th style="width:30%">สถานะผู้เล่น</th>
@@ -91,7 +92,8 @@ tr:hover { cursor: pointer;}
 							<tbody id="table_data">
 								<?php if($player_data->num_rows() > 0):
 										foreach($player_data->result_array() as $row):
-											echo '<tr><td>'.$row['player_name'].'</td>';
+											echo '<tr><td>'.$row['player_id'].'</td>';
+											echo '<td>'.$row['player_name'].'</td>';
 											if ($row['player_sex'] == 1): //male
 												echo "<td><i class='fa fa-fw big male'>&#9794; </i>
 													<p style='display:none' value='1'>1</p></td>";
