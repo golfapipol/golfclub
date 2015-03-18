@@ -152,15 +152,19 @@ class Scoring extends Core {
 					// insert 
 					$field =  $this->tour_field_model->getFieldByIdSeq($tourid,$field_seq)->row_array();
 					$check = $this->score_model->check($player_id,$field['field_id']);
-					$h1 = $_POST['hole_'.($i-8).'_score'];	$h2 = $_POST['hole_'.($i-7).'_score'];
-					$h3 = $_POST['hole_'.($i-6).'_score'];	$h4 = $_POST['hole_'.($i-5).'_score'];
-					$h5 = $_POST['hole_'.($i-4).'_score'];	$h6 = $_POST['hole_'.($i-3).'_score'];
-					$h7 = $_POST['hole_'.($i-2).'_score'];	$h8 = $_POST['hole_'.($i-1).'_score'];
-					$h9 = $_POST['hole_'.($i).'_score']; $gross = $h1+$h2+$h3+$h4+$h5+$h6+$h7+$h8+$h9;
+					$h1 = ($_POST['hole_'.($i-8).'_score'] == "")? null: $_POST['hole_'.($i-8).'_score'];	
+					$h2 = ($_POST['hole_'.($i-7).'_score'] == "")? null: $_POST['hole_'.($i-7).'_score'];
+					$h3 = ($_POST['hole_'.($i-6).'_score'] == "")? null: $_POST['hole_'.($i-6).'_score'];	
+					$h4 = ($_POST['hole_'.($i-5).'_score'] == "")? null: $_POST['hole_'.($i-5).'_score'];
+					$h5 = ($_POST['hole_'.($i-4).'_score'] == "")? null: $_POST['hole_'.($i-4).'_score'];	
+					$h6 = ($_POST['hole_'.($i-3).'_score'] == "")? null: $_POST['hole_'.($i-3).'_score'];
+					$h7 = ($_POST['hole_'.($i-2).'_score'] == "")? null: $_POST['hole_'.($i-2).'_score'];	
+					$h8 = ($_POST['hole_'.($i-1).'_score'] == "")? null: $_POST['hole_'.($i-1).'_score'];
+					$h9 = ($_POST['hole_'.($i).'_score'] == "")? null: $_POST['hole_'.($i).'_score']; $gross = $h1+$h2+$h3+$h4+$h5+$h6+$h7+$h8+$h9;
 					if($check->num_rows() > 0): // check it have record yet? and update
-						$this->score_model->update($player_id,$field['field_id'],$h1,$h2,$h3,$h4,$h5,$h6,$h7,$h8,$h9,$gross);
+						$this->score_model->update($player_id,$field['field_id'],$h1,$h2,$h3,$h4,$h5,$h6,$h7,$h8,$h9,$gross,$tourid);
 					else: // or insert
-						$this->score_model->insert($player_id,$field['field_id'],$h1,$h2,$h3,$h4,$h5,$h6,$h7,$h8,$h9,$gross);
+						$this->score_model->insert($player_id,$field['field_id'],$h1,$h2,$h3,$h4,$h5,$h6,$h7,$h8,$h9,$gross,$tourid);
 					endif;
 					$field_seq++;
 				endfor;
@@ -173,7 +177,16 @@ class Scoring extends Core {
 			case 5:// import excel
 				break;
 		}
-	}	
+	}
+	public function scoreboard() {
+		$this->load->view('scoring/livescoreboard','');
+	}
+	
+	public function testJsonScore() {
+		$data['score'] = array(
+			
+		);
+	}
 }
 
 /* End of file Scoring.php */
