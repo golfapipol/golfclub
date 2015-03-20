@@ -104,9 +104,9 @@ class Scoring extends Core {
 					for ($i = (($row['field_seq']) * 9 - 8); $i <= (($row['field_seq']) * 9); $i++):
 						$holeNo = $i % 9;
 						if ($holeNo == 0) :
-							echo '<td><input type="text" name="hole_' . $i . '_score" /></td>';
+							echo '<td><input class="form-control number-input" type="text" name="hole_' . $i . '_score" /></td>';
 						else :
-							echo '<td><input type="text" name="hole_' . $i . '_score" /></td>';
+							echo '<td><input class="form-control number-input" type="text" name="hole_' . $i . '_score" /></td>';
 						endif;
 					endfor;
 					echo '<td><p class="sum"></p></td>';
@@ -178,14 +178,45 @@ class Scoring extends Core {
 				break;
 		}
 	}
-	public function scoreboard() {
-		$this->load->view('scoring/livescoreboard','');
+	public function scoreboard($tour_id) {
+		$data['livescore'] = $this->getLiveScore($tour_id);
+		$data['tournament_data'] = $this->tournament_model->getById($tour_id)->row_array();
+		$this->load->view('scoring/livescoreboard', $data);
 	}
 	
-	public function testJsonScore() {
-		$data['score'] = array(
-			
-		);
+	public function getLiveScore($tour_id) {
+		$players = $this->score_model->getTopTenScore($tour_id)->result_array();
+		foreach ($players as $key => $player) :
+			$count = 0;
+			$holeLeft = $this->score_model->countHoleLeft($player['player_id']);
+			foreach ($holeLeft->result_array() as $Left) :
+				if ($Left['hole1_score'] == null)	$count++; 
+				if ($Left['hole2_score'] == null)	$count++; 
+				if ($Left['hole3_score'] == null)	$count++; 
+				if ($Left['hole4_score'] == null)	$count++; 
+				if ($Left['hole5_score'] == null)	$count++; 
+				if ($Left['hole6_score'] == null)	$count++; 
+				if ($Left['hole7_score'] == null)	$count++; 
+				if ($Left['hole8_score'] == null)	$count++; 
+				if ($Left['hole9_score'] == null)	$count++; 
+			endforeach;
+			$players[$key]['hole_left'] = $count;
+		endforeach;
+		return $players;
+	}
+	
+	public function refreshLiveScore($tour_id) {
+		$livescore = $this->getLiveScore($tour_id);
+		header ('Content-type: text/html; charset=utf-8');
+		
+		$i = 1;
+		foreach($livescore as $row) :
+			echo '<tr><td>' . $i++ . '</td>';
+			echo '<td>' . $row["player_name"] . '</td>';
+			echo '<td>' . $row["player_hc"] . '</td>';
+			echo '<td>' . $row["hole_left"] . '</td>';
+			echo '<td>' . $row["total_score"] . '</td></tr>';
+		endforeach;
 	}
 }
 

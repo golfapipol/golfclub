@@ -65,40 +65,24 @@
 		<div class="box-body no-padding">
 			<table class="table table-hover">
 				<tbody><tr>
-					<th>ID</th>
-					<th>User</th>
-					<th>Date</th>
-					<th>Status</th>
-					<th>Reason</th>
+					<th>#</th>
+					<th>รายการแข่งขัน</th>
+					<th>HC</th>
+					<th>Gross Score</th>
 				</tr>
-				<tr>
-					<td>183</td>
-					<td>John Doe</td>
-					<td>11-7-2014</td>
-					<td><span class="label label-success">Approved</span></td>
-					<td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-				</tr>
-				<tr>
-					<td>219</td>
-					<td>Jane Doe</td>
-					<td>11-7-2014</td>
-					<td><span class="label label-warning">Pending</span></td>
-					<td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-				</tr>
-				<tr>
-					<td>657</td>
-					<td>Bob Doe</td>
-					<td>11-7-2014</td>
-					<td><span class="label label-primary">Approved</span></td>
-					<td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-				</tr>
-				<tr>
-					<td>175</td>
-					<td>Mike Doe</td>
-					<td>11-7-2014</td>
-					<td><span class="label label-danger">Denied</span></td>
-					<td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-				</tr>
+				<?php 
+					if(sizeof($player_history) > 0):
+						$i=0;
+						foreach($player_history as $history):
+							echo '<tr><td>' . $i++ .'</td>';
+							echo '<td>' . $history['tour_name'] . '</td>';
+							echo '<td>' . $history['player_hc'] . '</td>';
+							echo '<td>' . $history['total_score'] . '</td></tr>';
+						endforeach;
+					else:
+						echo '<tr><td colspan="4">ไม่พบประวัติการเข้าร่วมการแข่งขัน</td></tr>';
+					endif;
+				?>
 			</tbody></table>
 		</div><!-- /.box-body -->
 	</div>

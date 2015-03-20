@@ -59,6 +59,27 @@ class Score_model extends MyModel {
 		$sql = "DELETE FROM score WHERE player_id = ?";
 		$this->db->query($sql,array($player_id));
 	}
+	
+	public function getTopTenScore($tour_id) {
+		$sql = "SELECT score.player_id, player_name, player_age, player_sex, player_hc, SUM( gross_score ) as total_score, null as hole_left
+				FROM  score 
+				INNER JOIN tour_player ON score.player_id = tour_player.player_id 
+				WHERE score.tour_id = ?
+				GROUP BY (score.player_id) 
+				ORDER BY (total_score)
+				Limit 10";
+		$query = $this->db->query($sql, array($tour_id));
+		return $query;
+	}
+	public function countHoleLeft($player_id) {
+		$sql = "SELECT *
+				FROM score
+				WHERE player_id = ?";
+		$query = $this->db->query($sql, array($player_id));
+		return $query;
+	}
+	
+
 }
 
 /* End of file zone_model.php */

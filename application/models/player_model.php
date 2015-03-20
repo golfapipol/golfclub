@@ -104,6 +104,19 @@ class Player_model extends MyModel {
 		$this->last_insert_id = $this->db->insert_id();
 		return $this->last_insert_id;
 	}
+	public function getHistory($member_id) {
+		$sql = "SELECT player_hc, SUM( gross_score ) as total_score, tour_name
+				FROM  score 
+				INNER JOIN tour_player ON score.player_id = tour_player.player_id
+				INNER JOIN tournament ON tournament.tour_id = score.tour_id
+				INNER JOIN player ON player.player_id = tour_player.member_player_id
+				WHERE player.player_id = ?
+				GROUP BY (score.player_id) 
+				ORDER BY (tournament.tour_id)";
+				
+		$query = $this->db->query($sql, array($member_id));
+		return $query;
+	}
 }
 
 /* End of file zone_model.php */

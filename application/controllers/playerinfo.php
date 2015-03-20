@@ -157,7 +157,7 @@ class Playerinfo extends Required {
 	public function player_profile($id){
 		$data['player_data'] = $this->player_model->getById($id)->row_array();
 		$data['player_data']['player_birthdate'] = $this->format_time_model->formatToText($data['player_data']['player_birthdate']);
-		// ..... get history
+		$data['player_history'] = $this->player_model->getHistory($id)->result_array();
 		$this->render('player/profile', $data);
 	}
 }

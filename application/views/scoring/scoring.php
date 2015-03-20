@@ -116,6 +116,10 @@ li{cursor:pointer}
 							<ul class="nav nav-pills nav-stacked" id="player">
 							</ul>
 						</div>
+						<div class="col-md-4 col-xs-4">
+							<button class="btn btn-warning col-md-12" onclick="window.open('http://localhost/project/local/index.php/scoring/scoreboard/9');">Live Score</button>
+							<!--p id="player_left">ผลการกรอกคะแนนจาก  ?? / ?? คน</p-->
+						</div>
 					</div>
 				</div>
 			</div>
@@ -279,7 +283,9 @@ function getcard(id, element){
 						 // Allow: Ctrl+A
 						(e.keyCode == 65 && e.ctrlKey === true) || 
 						 // Allow: home, end, left, right
-						(e.keyCode >= 35 && e.keyCode <= 39)) {
+						(e.keyCode >= 35 && e.keyCode <= 39) ||
+						 // Allow: -
+						(e.keyCode == 109 || e.keyCode == 189)) {
 							 // let it happen, don't do anything
 							 return;
 					}
@@ -296,14 +302,12 @@ function getcard(id, element){
 }
 function submitScore(){
 	var url = "<?php echo site_url("scoring/score_control/3/".$tournament_data['tour_id']);?>";		
-	alert(url);
 	$.ajax({
 		type:"post",
 		url: url,
 		cache: false,
 		data: $('#scorecard-form').serialize(),
 		success: function(data){
-			alert(data);
 			$("#message").modal({ show:true});
 		},
 		error: function(request, status, error) {
