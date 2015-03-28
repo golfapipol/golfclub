@@ -8,9 +8,8 @@ li{cursor:pointer}
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1><?php echo $tournament_data['tour_name'];?>
-		<small><?php $TimeStart = explode("-",$tournament_data['tour_startdate']);
-		$TimeEnd = explode("-",$tournament_data['tour_enddate']);
-		echo '<td>'.$TimeStart[2]."/".$TimeStart[1]."/".$TimeStart[0].' - '.$TimeEnd[2]."/".$TimeEnd[1]."/".$TimeEnd[0].'</td>';?>
+		<small>
+		<?php echo '<td>'.$tournament_data['tour_startdate'].' - '.$tournament_data['tour_enddate'].'</td>';?>
 		</small>
 	</h1>
 	<ol class="breadcrumb">

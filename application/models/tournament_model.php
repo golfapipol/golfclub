@@ -50,6 +50,17 @@ class Tournament_model extends MyModel {
 		$query = $this->db->query($sql, array($id));
 		return $query;
 	}
+	public function update_config($tour_id, $scoreType, $scoregroup, $flightType) {
+		$sql = "UPDATE tournament 
+				SET tour_scoretype = ?,
+					tour_scoregroup = ?,
+					tour_flightdivide = ?
+				WHERE tour_id = ?";
+		$this->db->query($sql, array($scoreType,
+									$scoregroup,
+									$flightType,
+									$tour_id));
+	}
 }
 
 /* End of file tournament_model.php */

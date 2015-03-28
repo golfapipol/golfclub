@@ -39,7 +39,7 @@
 										<div class="btn-group">
 											<a class="btn btn-info btn-flat" data-toggle="tooltip" data-original-title="รายละเอียดการแข่งขัน"  href="'.site_url('challenge/tourinfo/'.$row['tour_id']).'"><i class="fa fa-fw fa-info-circle"></i></a>
 											<a class="btn btn-success btn-flat" data-toggle="tooltip" data-original-title="กรอกคะแนน" href="'.site_url('scoring/scorekeeper/'.$row['tour_id']).'"><i class="fa fa-fw fa-clipboard" ></i></a>
-											<a class="btn bg-orange btn-flat" data-toggle="tooltip" data-original-title="ผลการแข่งขัน" href="#"><i class="fa fa-fw fa-trophy"></i></a>
+											<a class="btn bg-orange btn-flat" data-toggle="tooltip" data-original-title="ผลการแข่งขัน" href="'.site_url('summary/playerSummary/'.$row['tour_id']).'"><i class="fa fa-fw fa-trophy"></i></a>
 											<button type="button" class="btn btn-warning btn-flat edit" data-toggle="tooltip" data-original-title="แก้ไขการแข่งขัน" value="'.$row['tour_id'].'"><i class="fa fa-edit" ></i></button>
 											<button type="button" class="btn btn-danger btn-flat remove" data-toggle="tooltip" data-original-title="ลบ" value="'.$row['tour_id'].'"><i class="fa fa-fw fa-trash-o"></i></button>
 										</div>

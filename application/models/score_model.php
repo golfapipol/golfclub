@@ -61,9 +61,10 @@ class Score_model extends MyModel {
 	}
 	
 	public function getTopTenScore($tour_id) {
-		$sql = "SELECT score.player_id, player_name, player_age, player_sex, player_hc, SUM( gross_score ) as total_score, null as hole_left
+		$sql = "SELECT score.player_id, player_name, player_age, player_sex, player_hc, SUM( gross_score ) as total_score, null as hole_left, IFNULL(team_name,'-') as team_name
 				FROM  score 
 				INNER JOIN tour_player ON score.player_id = tour_player.player_id 
+				LEFT JOIN tour_team ON tour_player.team_id = tour_team.team_id
 				WHERE score.tour_id = ?
 				GROUP BY (score.player_id) 
 				ORDER BY (total_score)

@@ -37,7 +37,7 @@
 		<div class="content">
 			<div class="box">
 				<div class="box-header">
-					<h1 style="text-align:center">ผลการแข่งขันกอล์ฟ ชลบุรีเกมส์ ครั้งที่ 41</h1>
+					<h1 style="text-align:center"><button class="btn btn-danger">Live</button>ผลการแข่งขันล่าสุด ชลบุรีเกมส์ ครั้งที่ 41</h1>
 				</div>
 				<div class="box-body no-padding">
 					<table class="table table-condensed" id="scoreboard">
@@ -45,6 +45,7 @@
 							<tr>
 								<th style="width: 10px">No.</th>
 								<th>Name</th>
+								<th>Team</th>
 								<th>HC</th>
 								<th>Thru</th>
 								<th>Total</th>
@@ -56,6 +57,7 @@
 							foreach($livescore as $row) :
 								echo '<tr><td>' . $i++ . '</td>';
 								echo '<td>' . $row["player_name"] . '</td>';
+								echo '<td>' . $row['team_name'] . '</td>';
 								echo '<td>' . $row["player_hc"] . '</td>';
 								echo '<td>' . $row["hole_left"] . '</td>';
 								echo '<td>' . $row["total_score"] . '</td></tr>';
@@ -81,7 +83,7 @@ $(document).ready(function() {
 				$(mTBody).fadeIn();
 			}
 		});
-	}, 120000);
+	}, 12000);
 });
 		</script>
 	</body>

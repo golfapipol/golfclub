@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-require_once(dirname(__FILE__) . "/core.php");
-class Scoring extends Core {
+require_once(dirname(__FILE__) . "/required.php");
+class Scoring extends Required {
 
 	/** available
 	 * {content}
@@ -17,15 +17,18 @@ class Scoring extends Core {
 		$this->load->model('tour_team_model');
 		$this->load->model('pairing_model');
 		$this->load->model('score_model');
+		$this->load->model('format_time_model');
 	}
 	public function scorekeeper ($id) {
 		$data['tournament_data'] = $this->tournament_model->getById($id)->row_array();
+		$data['tournament_data']['tour_startdate'] = $this->format_time_model->formatToText($data['tournament_data']['tour_startdate']);
+		$data['tournament_data']['tour_enddate'] = $this->format_time_model->formatToText($data['tournament_data']['tour_enddate']);
 		$data['team_data'] = $this->tour_team_model->getByTourId($id);
 		$data['maxhole'] = $this->tour_field_model->getFieldCount($id)->row_array();
 		$data['field_data'] = $this->tour_field_model->getFieldCount($id);
 		$data['pairing_data'] = $this->pairing_model->getPairingFromTourId($id);
 		$this->render('scoring/scoring', $data);
-	}
+	}/*
 	public function livescore ($id) {
 		$data['tournament_data'] = $this->tournament_model->getById($id)->row_array();
 		$this->render('scoring/livescore', $data);
@@ -33,7 +36,7 @@ class Scoring extends Core {
 	public function manualscore($id){
 		$data['tournament_data'] = $this->tournament_model->getById($id)->row_array();
 		$this->render('scoring/manualscore', $data);
-	}
+	}*/
 	public function getPlayer ($holeNo, $group, $tourid) {
 		$field = ((int) ($holeNo / 9)) + 1;
 		$hole = $holeNo % 9;
@@ -190,15 +193,15 @@ class Scoring extends Core {
 			$count = 0;
 			$holeLeft = $this->score_model->countHoleLeft($player['player_id']);
 			foreach ($holeLeft->result_array() as $Left) :
-				if ($Left['hole1_score'] == null)	$count++; 
-				if ($Left['hole2_score'] == null)	$count++; 
-				if ($Left['hole3_score'] == null)	$count++; 
-				if ($Left['hole4_score'] == null)	$count++; 
-				if ($Left['hole5_score'] == null)	$count++; 
-				if ($Left['hole6_score'] == null)	$count++; 
-				if ($Left['hole7_score'] == null)	$count++; 
-				if ($Left['hole8_score'] == null)	$count++; 
-				if ($Left['hole9_score'] == null)	$count++; 
+				if ($Left['hole1_score'] != null)	$count++; 
+				if ($Left['hole2_score'] != null)	$count++; 
+				if ($Left['hole3_score'] != null)	$count++; 
+				if ($Left['hole4_score'] != null)	$count++; 
+				if ($Left['hole5_score'] != null)	$count++; 
+				if ($Left['hole6_score'] != null)	$count++; 
+				if ($Left['hole7_score'] != null)	$count++; 
+				if ($Left['hole8_score'] != null)	$count++; 
+				if ($Left['hole9_score'] != null)	$count++; 
 			endforeach;
 			$players[$key]['hole_left'] = $count;
 		endforeach;
@@ -214,6 +217,7 @@ class Scoring extends Core {
 			echo '<tr><td>' . $i++ . '</td>';
 			echo '<td>' . $row["player_name"] . '</td>';
 			echo '<td>' . $row["player_hc"] . '</td>';
+			echo '<td>' . $row['team_name'] . '</td>';
 			echo '<td>' . $row["hole_left"] . '</td>';
 			echo '<td>' . $row["total_score"] . '</td></tr>';
 		endforeach;
