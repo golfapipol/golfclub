@@ -133,7 +133,7 @@
 							<div class="row" id="pairing-row">
 								<div class="table-responsive"><br />
 									<table class="table " id="pairing-table" style="width:95%!important">
-										<thead>
+										<thead style="background-color:#3c8dbc">
 											<tr>
 												<th style="width:30%!important">ชื่อ</th>
 												<th style="width:15%!important">อายุ</th>
@@ -170,14 +170,30 @@
 					<h3 class="box-title">รายชื่อผู้เข้าแข่งขัน</h3>
 				</div>
 				<div class="box-body table-responsive">
+					
+						<?php 
+							if ($team_data->num_rows() > 0):
+								echo '<div class="form-group">
+                                            <label>กรองโดยทีม</label>
+                                            <select id="filter_team"class="form-control" onchange="filter_team()"><option value="0">ทั้งหมด</option>';
+							   foreach($team_data->result_array() as $team):
+									echo '<option value="'.$team['team_id'].'">'.$team['team_name'].'</option>';
+								endforeach;
+                                echo '</select></div>';
+								
+								echo "</select>";
+							endif;
+						?>
+					
 					<table id="people" class="table table-hover table-bordered">
-						<thead>
+						<thead style="background-color:#3c8dbc">
 							<tr>
 								<th style="width:5%!important"></th>
 								<th style="width:40%">ชื่อ</th>
 								<th style="width:20%">อายุ</th>
 								<th style="width:15%">HC</th>
 								<th style="width:15%">เพศ</th>
+								<th style="display:none"></th>
 								<th style="display:none"></th>
 							</tr>
 						</thead>
@@ -194,7 +210,8 @@
 									else: //female
 										echo '<i class="fa fa-fw big female">&#9792; </i><p style="display:none">2</p>';
 									endif;
-									echo '</td><td style="display:none">'.$row['player_id'].'</td></tr>';
+									echo '</td><td style="display:none">'.$row['player_id'].'</td>';
+									echo '</td><td style="display:none">'.$row['team_id'].'</td></tr>';
 							endforeach;
 						endif;?>
 						</tbody>
@@ -327,7 +344,7 @@ function jqueryon(){
 				jqueryon();
 			},
 			error: function(request, status, error) {
-				alert(error);
+				console.log(error);
 				$("#error").modal({ show:true});
 			}
 		});
@@ -363,7 +380,7 @@ function jqueryon(){
 				jqueryon();
 			},
 			error: function(request, status, error) {
-				alert(error);
+				console.log(error);
 				$("#error").modal({ show:true});
 			}
 		});
@@ -532,7 +549,7 @@ function refresh_table_pairing(){
 		success: function(json){
 			pairing_table.fnDestroy();
 			$("#pairing-tbody").html(json);
-			alert(json);
+			console.log(json);
 			pairing_table = $("#pairing-table").dataTable({
 				"bLengthChange": false,
 				"bFilter": false,
@@ -560,6 +577,7 @@ function refresh_table_player(){
 				return "แสดงรายการที่ "+iStart+" ถึง "+iEnd+" จาก "+iTotal+" รายการ";
 			  }
 		});
+		filter_team();
 		$(".item").draggable({
 			cursor: 'move',
 			revert: 'valid',
@@ -584,5 +602,13 @@ function sleep(milliseconds) {
       break;
     }
   }
+}
+function filter_team() {
+	var filter = $("#filter_team").val();
+	if(filter == "0"){ 
+		table.fnFilter("",6);
+	}else {
+		table.fnFilter( filter,6);
+	}
 }
 </script>
