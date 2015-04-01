@@ -127,14 +127,14 @@ tr:hover { cursor: pointer;}
 							</div>
 						</div>
 					</div>
-					<div class="row">
+					<!--div class="row">
 						<div class="col-md-2 col-md-offset-1">
 							<div class="form-group">
 								<label for="InputProfile">รูปประจำตัว ( ถ้ามี )</label>
 								<input type="file" id="InputProfile" name="InputProfile">
 							</div>
 						</div>
-					</div>
+					</div-->
 				</div><!-- /.box-body -->
 				<div class="box-footer clearfix" style="text-align:right">
 					<button type="button" class="btn btn-default" onclick="javascript:history.back()">ยกเลิก</button>

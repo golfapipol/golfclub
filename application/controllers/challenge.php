@@ -31,6 +31,7 @@ class Challenge extends Required {
 		$data['tournament_data']['tour_enddate'] = $this->format_time_model->formatToText($data['tournament_data']['tour_enddate']);
 		$data['field_data'] = $this->field_model->getByClub($data['tournament_data']['club_id']);
 		$data['tour_field_data'] = $this->tour_field_model->getByTourId($data['tournament_data']['tour_id']);
+		$data['pairing_data'] = $this->pairing_model->getPairingFromTourId($data['tournament_data']['tour_id'])->num_rows();
 		$this->render('challenge/tourinfo',$data);
 	}
 	public function player($id) {
@@ -45,6 +46,7 @@ class Challenge extends Required {
 		$data['player_data'] = $this->tour_player_model->pairing($id);
 		$data['field_data'] = $this->tour_field_model->getFieldCount($id);
 		$data['hole_data'] = $this->tour_field_model->getFirstField($id)->row_array();
+		$data['team_data'] = $this->tour_team_model->getByTourId($id);
 		$this->render('challenge/pairing', $data);
 	}
 	public function pairing_control($action=0, $tourid=0){
@@ -146,7 +148,8 @@ class Challenge extends Required {
 							else: //female
 								echo '<i class="fa fa-fw big female">&#9792; </i><p style="display:none">2</p>';
 							endif;
-							echo '</td><td style="display:none">' . $row['player_id'] . '</td></tr>';
+							echo '</td><td style="display:none">' . $row['player_id'] . '</td>';
+							echo '</td><td style="display:none">' . $row['team_id'] . '</td></tr>';
 					endforeach;
 				endif;
 				break;
@@ -213,6 +216,7 @@ class Challenge extends Required {
 													$InputTeam, 
 													$TourId);
 				break;
+			
 			case 2: // add team
 				$InputName = $_POST['InputName'];
 				$TourId = $_POST['tourId'];
@@ -232,27 +236,9 @@ class Challenge extends Required {
 				if ($team_data->num_rows() > 0):
 					foreach ($team_data->result_array() as $row):
 						echo '<tr><td>'.$row['team_name'].'</td>';
-						echo '<td><button type="button" class="btn btn-primary edit-team" data-toggle="tooltip" data-original-title="ดูรายละเอียด" value="' . $row['team_id'] . '"><i class="fa fa-info"></i></button>
+						echo '<td><button type="button" class="btn btn-warning edit-team" data-toggle="tooltip" data-original-title="ดูรายละเอียด" value="' . $row['team_id'] . '"><i class="fa fa-pencil"></i></button>
 							<button type="button" class="btn btn-danger " data-toggle="tooltip" data-original-title="ลบ" onclick="remove_list_team(this)" value="' . $row['team_id'] . '"><i class="fa fa-times"></i></button></td></tr>';
 					endforeach;
-				endif;
-				break;
-			case 5: // get all single
-				$player_single_data = $this->tour_player_model->getByTourIdSingle($tourid);
-				header ('Content-type: text/html; charset=utf-8');
-				if($player_single_data->num_rows() > 0):
-					foreach($player_single_data->result_array() as $row ):
-					echo '<tr><td>' . $row['player_name'] . '</td>';
-					echo '<td>' . $row['player_age'] . '</td>';
-					echo '<td>' . $row['player_hc'] . '</td>';
-					echo '<td>';
-					if ($row['player_sex'] == 1): //male
-						echo '<i class="fa fa-fw big male">&#9794; </i><p style="display:none">M</p>';
-					else: //female
-						echo '<i class="fa fa-fw big female">&#9792; </i><p style="display:none">F</p>';
-					endif;
-					echo '</td><td><button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="ลบ" onclick="remove_list_single(this)" value="' . $row['player_id'] . '"><i class="fa fa-times"></i></button></td></tr>';
-				endforeach;
 				endif;
 				break;
 			case 6: // get player team by id
@@ -294,13 +280,14 @@ class Challenge extends Required {
 				endif;
 				break;
 			case 0:
-				$select_table = 3;
+				$select_table = $_POST['select_table'];
 				if ($select_table == 2): // remove team
+					echo "team";
 					$team_id = $_POST['InputId'];
 					$this->tour_player_model->deleteByTeam($team_id);
 					$this->tour_team_model->delete($team_id);
 				else: // remove player
-					$player_id = 62;
+					$player_id = $_POST['InputId'];
 					$this->score_model->delete($player_id);
 					$this->pairing_model->deleteByPlayerID($player_id);
 					$this->tour_player_model->delete($player_id);

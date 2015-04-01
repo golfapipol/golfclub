@@ -1,10 +1,7 @@
-<style>.flightinput{width:70%;text-align:center}</style>
+<style>.flightinput{width:70%;text-align:center} .modal-dialog { width: 80%; margin: 30px auto;} a:hover{cursor:pointer;}</style>
 <!-- Content Header (Page header) -->
 <section class="content-header">
-	<h1>
-		ผลการแข่งขัน
-		<small>Summary Result</small>
-	</h1>
+	<h1>ผลการแข่งขัน<small>Summary Result</small></h1>
 	<ol class="breadcrumb">
 		<li><a href="<?php echo site_url('home');?>"><i class="fa fa-dashboard"></i> Home</a></li>
 		<li class="active">ผลการแข่งขัน</li>
@@ -17,15 +14,9 @@
 			<!-- small box -->
 			<a href="<?php echo site_url("summary/playerSummary/" . $tournament['tour_id']);?>">
 				<div class="small-box bg-blue">
-					<div class="inner">
-						<h3>Score Summary</h3><p>ประเภทบุคคล</p>
-					</div>
-					<div class="icon">
-						<i class="fa fa-fw fa-user"></i>
-					</div>
-					<div class="small-box-footer">
-						&nbsp;
-					</div>
+					<div class="inner"><h3>Score Summary</h3><p>ประเภทบุคคล</p></div>
+					<div class="icon"><i class="fa fa-fw fa-user"></i></div>
+					<div class="small-box-footer">&nbsp;</div>
 				</div>
 			</a>
 		</div>
@@ -33,15 +24,9 @@
 			<a href="<?php echo site_url("summary/teamSummary/" . $tournament['tour_id']);?>">
 				<!-- small box -->
 				<div class="small-box bg-green">
-					<div class="inner">
-						<h3>Group Summary</h3><p>ประเภททีม</p>
-					</div>
-					<div class="icon">
-						<i class="fa fa-fw fa-users"></i>
-					</div>
-					<div class="small-box-footer">
-						&nbsp;
-					</div>
+					<div class="inner"><h3>Group Summary</h3><p>ประเภททีม</p></div>
+					<div class="icon"><i class="fa fa-fw fa-users"></i></div>
+					<div class="small-box-footer">&nbsp;</div>
 				</div>
 			</a>
 		</div>
@@ -49,16 +34,9 @@
 			<a href="<?php echo site_url("summary/config/" . $tournament['tour_id']);?>">
 				<!-- small box -->
 				<div class="small-box bg-light-blue">
-					<div class="inner">
-						<h3>Config</h3><p>ตั้งค่า</p>
-					</div>
-					
-					<div class="icon">
-						<i class="fa fa-fw fa-gear "></i>
-					</div>
-					<div class="small-box-footer">
-						&nbsp;
-					</div>
+					<div class="inner"><h3>Config</h3><p>ตั้งค่า</p></div>
+					<div class="icon"><i class="fa fa-fw fa-gear "></i></div>
+					<div class="small-box-footer">&nbsp;</div>
 				</div>
 			</a>
 		</div>
@@ -74,31 +52,51 @@
 						<ul class="nav nav-pills nav-stacked">
 							<li class="header">ประเภทบุคคล</li>
 							<li class="filter active" value="0"><a><i class="fa fa-folder"></i>ทั้งหมด</a></li>
-							<li class="filter" value="1"><a><i class="fa fa-file-o"></i>Flight A</a></li>
-							<li class="filter" value="2"><a><i class="fa fa-fw fa-exclamation"></i>Flight B</a></li>
-							<li class="filter" value="3"><a><i class="fa fa-fw fa-flag-checkered"></i>Flight C</a></li>
-							<li class="filter" value="4"><a><i class="fa fa-fw fa-flag-checkered"></i>Flight D</a></li>
+							<?php 
+								if (count($flights)):
+									foreach($flights as $flight):
+										if ($tournament['tour_flightdivide'] == 1):
+											echo '<li class="filter" value="'.$flight['flight_id'].'"><a>Flight '.$flight['flight_name'].'</a></li>';
+										else:
+											if ($flight['flight_type'] == 1):
+												echo '<li class="filter" value="'.$flight['flight_id'].'"><a>ชาย '.$flight['flight_name'].'</a></li>';
+											else:
+												echo '<li class="filter" value="'.$flight['flight_id'].'"><a>หญิง '.$flight['flight_name'].'</a></li>';
+											endif;
+										endif;
+									endforeach;
+								endif;
+							?>
 						</ul>
 					</div>
 				</div>
 				<div class="col-md-9 col-xs-9">
-					<table class="table table-bordered">
-						<tbody><tr>
+					<table id="scoreboard" class="table table-bordered">
+						<thead>
+						<tr>
 							<th>#</th>
 							<th>Name</th>
 							<th>Flight</th>
-							<th>Gross Score</th>
+							<th style="display:none">Flight</th>
 							<th>Handicap</th>
-							<th>Total Score</th>
+							<th>IN</th>
+							<th>OUT</th>
+							<th>Gross Score</th>
+							<th>Net Score</th>
 						</tr>
+						</thead>
+						<tbody>
 						<tr>
 							<td>1.</td>
-							<td>Update software</td>
+							<td><a class="player" value="1">Update software</a></td>
 							<td>
 								<div class="progress xs">
 									<div class="progress-bar progress-bar-danger" style="width: 55%"></div>
 								</div>
 							</td>
+							<td style="display:none">79</td>
+							<td><span class="badge bg-red">55%</span></td>
+							<td><span class="badge bg-red">55%</span></td>
 							<td><span class="badge bg-red">55%</span></td>
 							<td><span class="badge bg-red">55%</span></td>
 							<td><span class="badge bg-red">55%</span></td>
@@ -111,6 +109,9 @@
 									<div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
 								</div>
 							</td>
+							<td style="display:none">80</td>
+							<td><span class="badge bg-yellow">70%</span></td>
+							<td><span class="badge bg-yellow">70%</span></td>
 							<td><span class="badge bg-yellow">70%</span></td>
 							<td><span class="badge bg-yellow">70%</span></td>
 							<td><span class="badge bg-yellow">70%</span></td>
@@ -123,6 +124,9 @@
 									<div class="progress-bar progress-bar-primary" style="width: 30%"></div>
 								</div>
 							</td>
+							<td style="display:none">81</td>
+							<td><span class="badge bg-light-blue">30%</span></td>
+							<td><span class="badge bg-light-blue">30%</span></td>
 							<td><span class="badge bg-light-blue">30%</span></td>
 							<td><span class="badge bg-light-blue">30%</span></td>
 							<td><span class="badge bg-light-blue">30%</span></td>
@@ -135,6 +139,9 @@
 									<div class="progress-bar progress-bar-success" style="width: 90%"></div>
 								</div>
 							</td>
+							<td style="display:none">82</td>
+							<td><span class="badge bg-green">90%</span></td>
+							<td><span class="badge bg-green">90%</span></td>
 							<td><span class="badge bg-green">90%</span></td>
 							<td><span class="badge bg-green">90%</span></td>
 							<td><span class="badge bg-green">90%</span></td>
@@ -149,55 +156,122 @@
 		</div>
 	</div>
 </section><!-- /.content -->
-<script>
-$("select").change(function(){
-	var num =$(this).val();
-	if(num!=="none"){
-		var plusnum = (parseInt(num)+1);
-		$(this).parent().parent().parent().parent().next().find('div:first-child').find('div:first-child').html(plusnum);
-		$(this).parent().parent().parent().parent().next().find('option').each(function(){
-			if(parseInt($(this).val()) <= plusnum ){ $(this).hide();}else{$(this).show();}
-		});
-	}else{
-		$(this).parent().parent().parent().parent().next().find('option').each(function(){$(this).show();});
-		$(this).parent().parent().parent().parent().next().find('select').prop("selectedIndex",0);
-		$(this).parent().parent().parent().parent().next().find('input').val("");
-	}
-	//$(this).parent().parent().parent().parent().next().find('select').prop("selectedIndex",plusnum);
-});
+
+<div class="modal fade in" id="player_summary" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myLargeModalLabel">Large modal<a class="anchorjs-link" href="#myLargeModalLabel"><span class="anchorjs-icon"></span></a></h4>
+        </div>
+        <div class="modal-body">
+          <h1>Name </h1>
+		  <p> HC : 24</p>
+		  <table class="table table-bordered">
+			<tbody>
+			<tr>
+				<th>Hole</th>
+				<th>1</th>
+				<th>2</th>
+				<th>3</th>
+				<th>4</th>
+				<th>5</th>
+				<th>6</th>
+				<th>7</th>
+				<th>8</th>
+				<th>9</th>
+				<th>OUT</th>
+				<th>Total Score</th>
+				<th>Hole</th>
+				<th>1</th>
+				<th>2</th>
+				<th>3</th>
+				<th>4</th>
+				<th>5</th>
+				<th>6</th>
+				<th>7</th>
+				<th>8</th>
+				<th>9</th>
+				<th>OUT</th>
+				<th>Total Score</th>
+			</tr>
+			<tr>
+				<th>Par</th>
+				<th>5</th>
+				<th>4</th>
+				<th>3</th>
+				<th>4</th>
+				<th>5</th>
+				<th>3</th>
+				<th>4</th>
+				<th>5</th>
+				<th>3</th>
+				<th>36</th>
+				<th>72</th>
+			</tr>
+			<tr>
+				<th>Gross</th>
+				<th>5</th>
+				<th>4</th>
+				<th>3</th>
+				<th>4</th>
+				<th>5</th>
+				<th>3</th>
+				<th>4</th>
+				<th>5</th>
+				<th>3</th>
+				<th>36</th>
+				<th>76</th>
+			</tr>
+			<tr>
+				<th>Stableford</th>
+				<th>5</th>
+				<th>4</th>
+				<th>3</th>
+				<th>4</th>
+				<th>5</th>
+				<th>3</th>
+				<th>4</th>
+				<th>5</th>
+				<th>3</th>
+				<th>36</th>
+				<th>36</th>
+			</tr>
 			
-			$(".flightDivide").click(function(){
-				$(".flightDivide").removeClass("btn-primary active");
-				$(".flightDivide").addClass("btn-default");
-				$(this).removeClass("btn-default");
-				$(this).addClass("btn-primary active");
-				$("#flightType").val(($(this).attr('id')==='none')? 0:1);
+		</tbody></table>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div>
+ <script>
+var table = $("#scoreboard").dataTable({
+				"bLengthChange": false,
+				"bSort": true//,"aaSorting": [[ 3, "desc" ]]
 			});
-			$('#add_flight').click(function(){
-				var last_char = $('.flight tr:nth-last-child(2) td').text();
-				var option = $('.flight tr:nth-last-child(2)').find('select').html();
-				var code = last_char.charCodeAt(0)+1;
-				$('.flight tr:last').before('<tr><td>'+String.fromCharCode(code)+'</td><td colspan="2"><div class="row"><div class="col-md-4">'
-				+'</div><div class="col-md-1">-</div><div class="col-md-6">'
-				+'<select class="form-control" >'+option+'</select>'
-				+'</div></div>'
-				+'</td></td><td><button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" onclick="remove_flight(this)" data-original-title="ลบ" ><i class="fa fa-times"></i></button></td></tr>');
-				$("select").change(function(){
-					var num =$(this).val();
-					if(num!=="none"){
-						var plusnum = (parseInt(num)+1);
-						$(this).parent().parent().parent().parent().next().find('input').val(plusnum);
-						$(this).parent().parent().parent().parent().next().find('option').each(function(){
-							if(parseInt($(this).val()) <= plusnum ){ $(this).hide();}else{$(this).show();}
-						});
-					}else{
-						$(this).parent().parent().parent().parent().next().find('option').each(function(){$(this).show();});
-						$(this).parent().parent().parent().parent().next().find('select').prop("selectedIndex",0);
-						$(this).parent().parent().parent().parent().next().find('input').val("");
-					}
-				});
-			});
-			function remove_flight(object){
-				$(object).parent().parent().remove();
-			}
+			
+$('.filter').click(function(e){
+	$('.filter').each(function(){
+		$(this).removeClass("active");
+	});
+	$(this).addClass("active");
+	var filter = $(this).val();
+	if(filter == "0"){ 
+		table.fnFilter("",3);
+	}else {
+		table.fnFilter( filter,3);
+	}
+	//
+});
+
+$('.player').click(function () {
+	var value = $(this).attr('value');
+	var url = "<?php echo site_url('summary/getPlayerSummary');?>/" + value;
+	$.get( url, function() {})
+	.done(function(data) {
+		console.log(data);
+		//$().html(data);
+		$('#player_summary').modal('show');
+	});
+	
+});
 </script>
