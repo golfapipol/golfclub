@@ -19,6 +19,7 @@ class Summary extends Required {
 		$this->load->model('pairing_model');
 		$this->load->model('score_model');
 		$this->load->model('format_time_model');
+		$this->load->model('calculate_score_model');
 	}
 	
 	public function playerSummary($tour_id) {
@@ -26,7 +27,8 @@ class Summary extends Required {
 		if ($data['tournament']['tour_scoregroup'] == null || $data['tournament']['tour_flightdivide'] == null) :
 			redirect('summary/config/' . $tour_id, 'refresh');
 		endif;
-		//$data['flights'] = $this->flight_model->getByTourId($tour_id)->result_array();
+		$data['flights'] = $this->flight_model->getByTourId($tour_id)->result_array();
+		//$data['team_score'] = $this->score_model->getTeamScore($tour_id)->result_array();
 		$this->render('summary/summary', $data);
 	}
 	
@@ -35,7 +37,9 @@ class Summary extends Required {
 		if ($data['tournament']['tour_scoregroup'] == null || $data['tournament']['tour_flightdivide'] == null) :
 			redirect('summary/config/' . $tour_id, 'refresh');
 		endif;
-		//$data['flights'] = $this->flight_model->getByTourId($tour_id)->result_array();
+		$player_score = $this->score_model->getPlayerScore($tour_id)->result_array();
+		$data['team_score'] = $this->calculate_score_model->getTeamScoreLimitTo($data['tournament']['tour_scoregroup'], $player_score);
+		//$data['team_score'] = $this->score_model->getTeamScore($tour_id)->result_array();
 		$this->render('summary/teamsummary', $data);
 	}
 	
@@ -92,6 +96,14 @@ class Summary extends Required {
 			endfor;
 		endif;
 		redirect('summary/config/' . $tour_id, 'refresh');
+	}
+	
+	public function getPlayerSummary($player_id, $tour_id) {
+		
+	}
+	
+	public function getTeamSummary($team_id, $tour_id) {
+		
 	}
 }
 
