@@ -1,7 +1,10 @@
 <style>.flightinput{width:70%;text-align:center}</style>
 <!-- Content Header (Page header) -->
 <section class="content-header">
-	<h1>ผลการแข่งขัน<small>Summary Result</small></h1>
+	<h1>
+		ผลการแข่งขัน
+		<small>Summary Result</small>
+	</h1>
 	<ol class="breadcrumb">
 		<li><a href="<?php echo site_url('home');?>"><i class="fa fa-dashboard"></i> Home</a></li>
 		<li class="active">ผลการแข่งขัน</li>
@@ -14,9 +17,15 @@
 			<!-- small box -->
 			<a href="<?php echo site_url("summary/playerSummary/" . $tournament['tour_id']);?>">
 				<div class="small-box bg-blue">
-					<div class="inner"><h3>Score Summary</h3><p>ประเภทบุคคล</p></div>
-					<div class="icon"><i class="fa fa-fw fa-user"></i></div>
-					<div class="small-box-footer">&nbsp;</div>
+					<div class="inner">
+						<h3>Score Summary</h3><p>ประเภทบุคคล</p>
+					</div>
+					<div class="icon">
+						<i class="fa fa-fw fa-user"></i>
+					</div>
+					<div class="small-box-footer">
+						&nbsp;
+					</div>
 				</div>
 			</a>
 		</div>
@@ -24,9 +33,15 @@
 			<a href="<?php echo site_url("summary/teamSummary/" . $tournament['tour_id']);?>">
 				<!-- small box -->
 				<div class="small-box bg-green">
-					<div class="inner"><h3>Group Summary</h3><p>ประเภททีม</p></div>
-					<div class="icon"><i class="fa fa-fw fa-users"></i></div>
-					<div class="small-box-footer">&nbsp;</div>
+					<div class="inner">
+						<h3>Group Summary</h3><p>ประเภททีม</p>
+					</div>
+					<div class="icon">
+						<i class="fa fa-fw fa-users"></i>
+					</div>
+					<div class="small-box-footer">
+						&nbsp;
+					</div>
 				</div>
 			</a>
 		</div>
@@ -34,9 +49,16 @@
 			<a href="<?php echo site_url("summary/config/" . $tournament['tour_id']);?>">
 				<!-- small box -->
 				<div class="small-box bg-light-blue">
-					<div class="inner"><h3>Config</h3><p>ตั้งค่า</p></div>
-					<div class="icon"><i class="fa fa-fw fa-gear "></i></div>
-					<div class="small-box-footer">&nbsp;</div>
+					<div class="inner">
+						<h3>Config</h3><p>ตั้งค่า</p>
+					</div>
+					
+					<div class="icon">
+						<i class="fa fa-fw fa-gear "></i>
+					</div>
+					<div class="small-box-footer">
+						&nbsp;
+					</div>
 				</div>
 			</a>
 		</div>

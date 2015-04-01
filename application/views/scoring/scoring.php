@@ -286,12 +286,6 @@ function getcard(id, element){
 						 // Allow: -
 						(e.keyCode == 109 || e.keyCode == 189)) {
 							 // let it happen, don't do anything
-							if (e.keyCode == 37) {
-								$(this).parent().prev().find(".number-input").focus();
-							}
-							if (e.keyCode == 39) {
-								$(this).parent().next().find(".number-input").focus();
-							}
 							 return;
 					}
 					// Ensure that it is a number and stop the keypress

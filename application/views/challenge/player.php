@@ -26,7 +26,7 @@ th{text-align:center}
 <!-- Main content -->
 <section class="content">
 	<div class="row">
-		<div class="col-lg-4 col-xs-4">
+		<div class="col-lg-4 col-xs-6">
 			<a href="<?php echo site_url("challenge/tourinfo/".$tournament_data['tour_id']);?>">
 				<!-- small box -->
 				<div class="small-box bg-aqua">
@@ -46,7 +46,7 @@ th{text-align:center}
 				</div>
 			</a>
 		</div>
-		<div class="col-lg-4 col-xs-4">
+		<div class="col-lg-4 col-xs-6">
 			<!-- small box -->
 			<a href="#">
 				<div class="small-box bg-blue">
@@ -66,7 +66,7 @@ th{text-align:center}
 				</div>
 			</a>
 		</div>
-		<div class="col-lg-4 col-xs-4">
+		<div class="col-lg-4 col-xs-6">
 			<a href="<?php echo site_url("challenge/pairing/".$tournament_data['tour_id']);?>">
 				<!-- small box -->
 				<div class="small-box bg-purple">
@@ -87,7 +87,24 @@ th{text-align:center}
 			</a>
 		</div>
 	</div>
-	<h4 class="page-header">รายชื่อผู้เข้าแข่งขัน</h4>
+	<div class="row">
+		<div class="col-md-4 col-xs-6">
+			<h4 class="page-header">รายชื่อผู้เข้าแข่งขัน</h4>
+		</div>
+		<div class="col-md-4 col-xs-3">
+			<a class="btn btn-block btn-social btn-success group-button">
+				<i class="fa fa-users"></i> ประเภททีม 
+			</a>
+		</div>
+		<div class="col-md-4 col-xs-3">
+			<a class="btn btn-block btn-social btn-info single-button">
+				<i class="fa fa-user"></i> ประเภทบุคคล
+			</a>
+		</div>
+	
+	
+	</div>
+	<br />
 	<div class="row" >
 		<div class="col-md-6 col-xs-6 group-table">
 			<div class="box box-solid box-success ">
@@ -98,7 +115,7 @@ th{text-align:center}
 					<div class="box-body table-responsive no-padding">
 						<br />
 						<table id="group" class="table table-hover table-bordered">
-							<thead style="background-color:#3c8dbc">
+							<thead>
 								<tr>
 									<th style="width:60%!important">ชื่อทีม</th>
 									<th style="width:40%!important">ตัวเลือก</th>
@@ -149,13 +166,13 @@ th{text-align:center}
 				<form role="form">
 					<div class="box-body " >
 						<div id="team-info-body">
-						<h3>ทีม <div class="inline"></div><button type="button" class="btn btn-warning edit-team-info pull-right" data-toggle="tooltip" data-original-title="แก้ไขชื่อทีม" ><i class="fa fa-edit"></i></button></h3>
+						<h3>ทีม <div class="inline">ทีม บูรพา โย่ๆ</div><button type="button" class="btn btn-warning edit-team-info pull-right" data-toggle="tooltip" data-original-title="แก้ไขชื่อทีม" ><i class="fa fa-edit"></i></button></h3>
 						<input type="hidden" name="teamId" id="teamId" />
 						<br />
 						</div>
 						
 						<table id="team-player" class="table table-hover table-bordered">
-							<thead style="background-color:#3c8dbc">
+							<thead>
 								<tr>
 									<th style="width:40%!important">ชื่อ</th>
 									<th style="width:20%!important">อายุ</th>
@@ -169,6 +186,50 @@ th{text-align:center}
 						</table>
 					</div>
 					<div class="box-footer clearfix">
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="col-md-6 col-xs-6 single-table">
+			<div class="box box-solid box-info">
+				<div class="box-header">
+					<h3 class="box-title">รายชื่อผู้เข้าแข่งขันประเภทบุคคล</h3>
+				</div>
+				<form role="form">
+					<div class="box-body table-responsive no-padding">
+						<br />
+						<table id="people" class="table table-hover table-bordered">
+							<thead>
+								<tr>
+									<th style="width:40%!important">ชื่อ</th>
+									<th style="width:20%!important">อายุ</th>
+									<th style="width:15%!important">HC</th>
+									<th style="width:15%!important">เพศ</th>
+									<th style="width:15%!important">ตัวเลือก</th>
+								</tr>
+							</thead>
+							<tbody class="drop-single" id="drop-single">
+							<?php 
+								if($player_single_data->num_rows() > 0):
+									foreach($player_single_data->result_array() as $row ):
+									echo '<tr><td>'.$row['player_name'].'</td>';
+									echo '<td>'.$row['player_age'].'</td>';
+									echo '<td>'.$row['player_hc'].'</td>';
+									echo '<td>';
+									if($row['player_sex'] == 1): //male
+										echo '<i class="fa fa-fw big male">&#9794; </i><p style="display:none">M</p>';
+									else: //female
+										echo '<i class="fa fa-fw big female">&#9792; </i><p style="display:none">F</p>';
+									endif;
+									echo '</td><td><button type="button" class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="ลบ" onclick="remove_list_single(this)" value="'.$row['player_id'].'"><i class="fa fa-times"></i></button></td></tr>';
+								endforeach;
+								endif;
+							?>
+							</tbody>
+						</table>
+					</div><!-- /.box-body -->
+
+					<div class="box-footer">
 					</div>
 				</form>
 			</div>
@@ -193,7 +254,7 @@ th{text-align:center}
 									<div class="table-responsive">
 										<!-- THE MESSAGES -->
 										<table class="table " id="member-table" style="width:100%!important">
-											<thead style="background-color:#3c8dbc">
+											<thead>
 												<tr>
 													<th style="width:20%!important"></th>
 													<th style="width:30%!important">ชื่อ</th>
@@ -234,6 +295,8 @@ th{text-align:center}
 									</div><!-- /.table-responsive -->
 								</div><!-- /.box-body -->
 								<div class="box-footer clearfix no-border">
+								
+									<button type="button" class="btn btn-primary add-player-single pull-right" onclick="member_add_single()">เพิ่มผู้เล่น</button>
 									<button type="button" class="btn btn-primary add-player-team pull-right" onclick="member_add_team()">เพิ่มผู้เล่น</button>									
 								</div>
 						</div>
@@ -295,6 +358,7 @@ th{text-align:center}
 									</div>
 								</div><!-- /.box-body -->
 								<div class="box-footer clearfix no-border">
+									<button type="button" class="btn btn-primary add-player-single pull-right" onclick="people_add_single()">เพิ่มผู้เล่น</button>
 									<button type="button" class="btn btn-primary add-player-team pull-right" onclick="people_add_team()">เพิ่มผู้เล่น</button>
 								</div>
 							</form>
@@ -418,6 +482,8 @@ th{text-align:center}
 
 <script type="text/javascript">
 $(".player").hide();
+$(".single-table").fadeOut();
+$(".add-player-single").hide();
 $(".team-info").fadeOut();
 // Chosen 
 $(".chosen-select").chosen({no_results_text:'ไม่พบรายการที่ทำการค้นหา',width: '300px'});
@@ -523,7 +589,15 @@ $(".group-button").click(function(){
 	$(".add-player-single").hide();
 	$(".add-player-team").show();
 	$(".group-table").fadeIn();$(".add-team").fadeIn();
-	$(".team-info").hide();$(".player").hide();
+	$(".team-info").hide();$(".single-table").hide();$(".player").hide();
+});
+$(".single-button").click(function(){
+	$(".add-player-single").show();
+	$(".add-player-team").hide();
+	$(".group-table").hide();$(".add-team").hide();$(".team-info").hide();
+	$(".single-table").fadeIn();$(".player").fadeIn();
+	$("#teamid_nonmember").val(0);
+	$("#member_teamid").val(0);
 });
 
 var table_group = $("#group").dataTable({
@@ -623,6 +697,41 @@ $(".drop-single").droppable({
 		refresh_table_single();
 	}
 });
+function member_add_single(){
+	table_member.fnDestroy();
+	var num_insert = $(".checked").length;
+	$(".checked").delay(15000).each(function(){
+		var row = $(this).parent().parent();
+		$("#member_inputName").val(row.find("td:nth-child(2)").text());
+		$("#member_inputAge").val(row.find("td:nth-child(3)").text());
+		$("#member_inputHC").val(row.find("td:nth-child(4)").text());
+		$("#member_InputSex").val(row.find("td:nth-child(5)").find('p').text());
+		$("#member_memberId").val(row.find("td:nth-child(6)").text());
+		$("#member_teamid").val($("#teamid_nonmember").val());
+		if($("#member_inputName").val()!=""){
+			var url = "<?php echo site_url();?>/challenge/player_control/1/<?php echo $tournament_data['tour_id'];?>";
+				$.ajax({
+					type:"post",
+					url: url,
+					cache: false,
+					data: $('#member-form').serialize(),
+					success: function(json){//alert(json);
+						
+					},
+					error: function(request, status, error) {
+						$("#error").modal({ show:true});
+					}
+				});
+		}
+		$("#member_inputName").val("");
+	});
+	table_member = $("#member-table").dataTable();
+	if(num_insert > 1 ){
+		sleep(2000);
+	}else{ sleep(500); }
+	refresh_table_single();
+	refresh_table();
+}
 function member_add_team(){
 	table_member.fnDestroy();
 	var num_insert = $(".checked").length;
@@ -657,6 +766,23 @@ function member_add_team(){
 	refresh_table_group_player();
 	refresh_table();
 }
+function people_add_single(){
+	var url = "<?php echo site_url();?>/challenge/player_control/1/<?php echo $tournament_data['tour_id'];?>";
+		$.ajax({
+			type:"post",
+			url: url,
+			cache: false,
+			data: $('#non-member-form').serialize(),
+			success: function(json){
+				refresh_table_single();
+			},
+			error: function(request, status, error) {
+				$("#add-modal").modal('hide');
+				$("#error").modal({ show:true});
+			}
+		});
+	$("#inputName").val("");
+}
 function people_add_team(){
 	var url = "<?php echo site_url();?>/challenge/player_control/1/<?php echo $tournament_data['tour_id'];?>";
 		$.ajax({
@@ -687,6 +813,12 @@ function remove_list_team(object){
 	$("#select_table").val(2);
 	$("#remove-modal").modal({ show:true});
 }
+function remove_list_single(object){
+	var id = $(object).val();
+	$("#InputId").val(id);
+	$("#select_table").val(1);
+	$("#remove-modal").modal({ show:true});
+}
 function submit_remove(){
 	var select_table = $("#select_table").val();
 	var team_id = $("#team_id").val();
@@ -699,7 +831,9 @@ function submit_remove(){
 			$("#remove-modal").modal('hide');
 			//$("#message").modal({ show:true});
 			//refresh data table
-			if(select_table == '2'){ // team
+			if(select_table == '1'){ // single player
+				refresh_table_single();
+			}else if(select_table == '2'){ // team
 				refresh_table_team();
 			}else if(select_table == '3'){ // group player
 				refresh_table_group_player();

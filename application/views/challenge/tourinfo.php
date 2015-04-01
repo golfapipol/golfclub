@@ -93,26 +93,21 @@
 							foreach($tour_field_data->result_array() as $row):
 								echo '<div class="box box-info"><div class="box-header">';
 								echo '<h3 class="box-title"> หลุม '.(($i*9)+1).' - '.(($i*9)+9).' : '.$row['field_name'].'</h3><input type="hidden" name="InputField[]" value="'.$row['field_id'].'" />';
-								if ($pairing_data == 0):
-									echo '<div class="box-tools pull-right">
-											<button class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="ลบ" onclick="remove_list(this)"><i class="fa fa-times"></i></button>
-										</div>';
-								endif;
-								echo '</div></div>';
+								echo '<div class="box-tools pull-right">
+										<button class="btn btn-danger btn-sm" data-toggle="tooltip" data-original-title="ลบ" onclick="remove_list(this)"><i class="fa fa-times"></i></button>
+									</div></div></div>';
 								$i +=1;
 							endforeach;
 						endif;
 						
 					?>
 					</div><!-- /.box-body -->
-					<?php if ($pairing_data == 0): 
-						echo '<div class="box-footer clearfix no-border">
-								<button type="submit" class="btn btn-success pull-right " style="margin-left:1%" >บันทึก</button> 
-								<button type="button" class="btn btn-default pull-right cancel" >ยกเลิก</button>
-							</div>';
-						endif;
-					?>
-					
+
+					<div class="box-footer clearfix no-border">
+						<button type="submit" class="btn btn-success pull-right " style="margin-left:1%" >บันทึก</button> 
+						<button type="button" class="btn btn-default pull-right cancel" >ยกเลิก</button>
+						
+					</div>
 				</form>
 			</div>
 		</div>

@@ -140,10 +140,7 @@
 <script type="text/javascript">
 	var table = $("#data").dataTable({
 		"bLengthChange": false,
-		"bSort": true,
-		"fnDrawCallback": function( oSettings ) {
-			jqueryon();
-		}
+		"bSort": true
 	});
 	$(document).ready(function(){
 		jqueryon();
@@ -231,10 +228,7 @@
 			$("#table_data").html(data);
 			table = $("#data").dataTable({
 				"bLengthChange": false,
-				"bSort": true,
-				"fnDrawCallback": function( oSettings ) {
-					jqueryon();
-				}
+				"bSort": true
 			});
 			jqueryon();
 		})

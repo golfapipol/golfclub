@@ -79,32 +79,7 @@ class Score_model extends MyModel {
 		$query = $this->db->query($sql, array($player_id));
 		return $query;
 	}
-	public function getPlayerScore($tour_id) {
-		$sql = "SELECT score.player_id, player_name, SUM( gross_score ) as total_score, tour_team.team_id as team_id,IFNULL(team_name,'-') as team_name
-				FROM  score 
-				INNER JOIN tour_player ON score.player_id = tour_player.player_id 
-				LEFT JOIN tour_team ON tour_player.team_id = tour_team.team_id
-				WHERE score.tour_id = ?
-				GROUP BY (score.player_id) 
-				ORDER BY team_id,total_score desc ";
-		$query = $this->db->query($sql, array($tour_id));
-		return $query;
-	}
-	public function getTeamScore($tour_id) {
-		$sql = "SELECT *, SUM(total_score) as team_score
-				FROM (
-					SELECT score.player_id, player_name, SUM( gross_score ) as total_score, tour_team.team_id as team_id,IFNULL(team_name,'-') as team_name
-					FROM  score 
-					INNER JOIN tour_player ON score.player_id = tour_player.player_id 
-					LEFT JOIN tour_team ON tour_player.team_id = tour_team.team_id
-					WHERE score.tour_id = ?
-					GROUP BY (score.player_id) 
-				) as players_score
-				GROUP BY (team_id)
-				ORDER BY (team_score) desc";
-		$query = $this->db->query($sql, array($tour_id));
-		return $query;
-	}
+	
 
 }
 
