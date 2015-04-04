@@ -21,7 +21,7 @@ class Challenge extends Required {
 		
 	}
 	public function index() {
-		$data['tournament_data'] = $this->tournament_model->getAll();
+		$data['tournament_data'] = $this->tournament_model->getAllDesc();
 		$data['chosen_club'] = $this->club_model->getSelect();
 		$this->render('challenge/challenges',$data);
 	}
@@ -345,7 +345,7 @@ class Challenge extends Required {
 				endforeach;
 				break;
 			case 0://getAll
-				$tournament_data = $this->tournament_model->getAll();
+				$tournament_data = $this->tournament_model->getAllDesc();
 				header ('Content-type: text/html; charset=utf-8');
 				if ($tournament_data->num_rows() > 0):
 					foreach ($tournament_data->result_array() as $row):

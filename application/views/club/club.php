@@ -206,11 +206,14 @@ tr:hover { cursor: pointer;}
 						url: url,
 						cache: false,
 						data: $('#addform').serialize(),
-						success: function(json){
+						success: function(clubid){
 							$("#add-modal").modal('hide');
 							$("#message").modal({ show:true});
 							//refresh data table
 							refresh_table();
+							if ($("#action").val() == 1) {
+								window.location.href = "<?php echo site_url('clubinfo/information');?>/" + clubid;
+							}
 						},
 						error: function(request, status, error) {
 							$("#add-modal").modal('hide');

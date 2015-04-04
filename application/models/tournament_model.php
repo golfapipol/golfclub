@@ -42,6 +42,11 @@ class Tournament_model extends MyModel {
 		$query = $this->db->query($sql);
 		return $query;
 	}
+	public function getAllDesc(){
+		$sql = "SELECT * FROM tournament ORDER BY tour_startdate desc";
+		$query = $this->db->query($sql);
+		return $query;
+	}
 	public function getById($id){
 		$sql = "SELECT * 
 				FROM tournament 

@@ -244,6 +244,7 @@
 <!-- Bootstrap WYSIHTML5 -->
 <script src="<?php echo base_url();?>js/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js" type="text/javascript"></script>		
 <script type="text/javascript">
+$(".textarea").wysihtml5();
 	var club_id = $("#clubid").val();
 	var table = $("#data").dataTable({
 		"bLengthChange": false,
@@ -360,7 +361,7 @@
 			});
 			
 		});
-		$(".textarea").wysihtml5();
+		
 		$('.field').click(function(e){	
 			$('.field').removeClass("active");
 			$(this).addClass("active");

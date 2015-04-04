@@ -60,7 +60,8 @@ class Clubinfo extends Required {
 			case 1: // insert
 				$InputName = $_POST['InputName'];
 				$InputGroup = $_POST['InputGroup'];
-				$this->club_model->insert($InputName, $InputGroup);
+				$club_id = $this->club_model->insert($InputName, $InputGroup);
+				echo $club_id;
 				break;
 			case 2: // update
 				$id = $_POST['editId'];
@@ -152,7 +153,7 @@ class Clubinfo extends Required {
 			case 0: // get all	
 				$field_data = $this->field_model->getByClub($clubid);
 				header ('Content-type: text/html; charset=utf-8');
-				echo '<li class="header">สนามแข่งขันทั้งหมด</li>';
+				echo '<li class="header">คอร์สทั้งหมด</li>';
 				if ($field_data->num_rows() > 0):
 				foreach ($field_data->result_array() as $row):
 					echo '<li class="field" value="' . $row['field_id'] . '">';

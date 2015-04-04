@@ -15,6 +15,7 @@ class Club_model extends MyModel {
 				VALUE( 0, ? , ?)";
 		$this->db->query($sql,array($name, $zone_id));
 		$this->last_insert_id = $this->db->insert_id();
+		return $this->last_insert_id;
 	}
 	public function update($id, $name, $zone_id) {
 		$sql = "UPDATE club 

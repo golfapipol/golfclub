@@ -171,18 +171,19 @@
 <script type="text/javascript">			
 var table = $("#tournament").dataTable({
 	"bLengthChange": false,
-	"bSort": true,
-	"aaSorting": [[ 4, "desc" ]]
+	"bSort": true
 });
 $(document).ready(function(){
 	jqueryon();	
 	//Date range picker
 	$('#InputTime').daterangepicker();
-		// Chosen 
+	
+	// Chosen 
 	
 });
 function jqueryon()
 {
+
 	$(".add").off("click");
 	$(".edit").off("click");
 	$(".remove").off("click");
@@ -191,6 +192,7 @@ function jqueryon()
 		$("#action").val(1);
 		$("#InputName").val("");
 		$("#InputTime").val("");
+
 		$("#add-modal").modal({show:true});
 	});
 	$(".edit").click(function(){
@@ -199,7 +201,14 @@ function jqueryon()
 		$("#editId").val(id);
 		var row = $(this).parent().parent().parent();
 		$("#InputName").val(row.find('td:nth-child(1)').text());
-		$("#InputTime").val(row.find('td:nth-child(2)').text());
+		var timerange = row.find('td:nth-child(2)').text();
+		var times = timerange.split("-");
+		var starttime = times[0].split("/");
+		var endtime = times[1].split("/");
+		var show = starttime[0] + "/" + starttime[1] + "/" + (parseInt(starttime[2], 10) - 543).toString();
+		show += " -" +endtime[0] + "/" + endtime[1] + "/" + (parseInt(endtime[2],10) - 543).toString()
+		$('#InputTime').data("daterangepicker").setStartDate(starttime[0] + "/" + starttime[1] + "/" + (parseInt(starttime[2], 10) - 543).toString());
+		$('#InputTime').data("daterangepicker").setEndDate(endtime[0] + "/" + endtime[1] + "/" + (parseInt(endtime[2],10) - 543).toString());
 		// get data
 		var url = "<?php echo site_url();?>/challenge/challenge_control/4/"+id;
 		$.get( url, function() {})
@@ -265,7 +274,7 @@ function jqueryon()
 		}
 		//
 	});
-	$(".chosen-select").chosen({no_results_text:'ไม่พบรายการที่ทำการค้นหา',width: '400px'});	
+	$(".chosen-select").chosen({no_results_text:'ไม่พบรายการที่ทำการค้นหา',width: '400px',search_contains: true});	
 	$(".chosen-select").trigger("chosen:updated");	
 }
 function deletesubmit(){
@@ -300,6 +309,7 @@ function refresh_table(){
 			"bLengthChange": false,
 			"bSort": true
 		});
+		
 		jqueryon();
 	})
 	.fail(function() { 
