@@ -85,6 +85,18 @@ class Pairing_model extends MyModel {
 		$query = $this->db->query($sql, array($tourid));
 		return $query;
 	}
+	public function getPlayerOrderByHoleSeq($tour_id) {
+		$sql = "SELECT pairing.player_id, player_name, player_sex, player_hc, player_age, field_seq, hole, pairing.group
+				FROM pairing
+				INNER JOIN tour_player
+				ON pairing.player_id = tour_player.player_id
+				INNER JOIN tour_field
+				ON pairing.tour_id = tour_field.tour_field_id
+				WHERE pairing.tour_id = ?
+				ORDER BY field_seq, hole, pairing.group";
+		$query = $this->db->query($sql, array($tour_id));
+		return $query;
+	}
 }
 
 /* End of file Prefix_model.php */

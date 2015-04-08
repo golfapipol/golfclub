@@ -488,10 +488,13 @@ $(".submit-team").click(function(){
 					})
 					.done(function(data) {
 						$("#team-info-body").html(data);
+						refresh_table_group_player();
+						$("#teamid_nonmember").val(teamid);
 					})
 					.fail(function() { 
 						$("#error").modal({ show:true}); 
 					});
+					
 					//hide & show select team
 					$("#add-team-modal").modal('hide');
 					$(".group-table").fadeOut();
@@ -501,6 +504,7 @@ $(".submit-team").click(function(){
 					$(".team-info").find('.overlay').remove();
 					$(".team-info").find('.loading-img').remove();
 					refresh_table_team();
+					
 					$("#member_teamid").val(teamid);
 				},
 				error: function(request, status, error) {
@@ -541,11 +545,17 @@ var table_member = $("#member-table").dataTable({
         radioClass: 'iradio_minimal'
     });
     return "แสดงรายการที่ "+iStart+" ถึง "+iEnd+" จาก "+iTotal+" รายการ";
-  }
+  },
+	"fnDrawCallback": function( oSettings ) {
+		$(".item").draggable({
+			cursor: 'move',
+			revert: 'valid',
+			helper:'clone'
+		});
+	}
 });
 // **************************************************************** group ************************
 // **************************************************************** single ************************
-var table = $("#people").dataTable();
 $(".item").draggable({
 	cursor: 'move',
 	revert: 'valid',
@@ -587,42 +597,12 @@ $(".drop-team").droppable({
 				});
 		}
 		$("#member_inputName").val("");
-		sleep(100);
+		sleep(50);
 		refresh_table_group_player();
+		refresh_table();
 	}
 });
-$(".drop-single").droppable({
-	accept: '.item',
-	activeClass: "drop-area",
-	drop: function( event, ui ) {
-		
-		$(ui.helper).remove();
-		table_member.fnDeleteRow($(ui.draggable).index());
-		$("#member_inputName").val(ui.draggable.find("td:nth-child(2)").text());
-		$("#member_inputAge").val(ui.draggable.find("td:nth-child(3)").text());
-		$("#member_inputHC").val(ui.draggable.find("td:nth-child(4)").text());
-		$("#member_InputSex").val(ui.draggable.find("td:nth-child(5)").find('p').text());
-		$("#member_memberId").val(ui.draggable.find("td:nth-child(6)").text());
-		if($("#member_inputName").val()!=""){
-			var url = "<?php echo site_url();?>/challenge/player_control/1/<?php echo $tournament_data['tour_id'];?>";
-				$.ajax({
-					type:"post",
-					url: url,
-					cache: false,
-					data: $('#member-form').serialize(),
-					success: function(json){//alert(json);
-						
-					},
-					error: function(request, status, error) {
-						$("#error").modal({ show:true});
-					}
-				});
-		}
-		$("#member_inputName").val("");
-		sleep(100);
-		refresh_table_single();
-	}
-});
+
 function member_add_team(){
 	table_member.fnDestroy();
 	var num_insert = $(".checked").length;
@@ -650,7 +630,15 @@ function member_add_team(){
 		}
 		$("#member_inputName").val("");
 	});
-	table_member = $("#member-table").dataTable();
+	table_member = $("#member-table").dataTable({
+		"fnDrawCallback": function( oSettings ) {
+			$(".item").draggable({
+				cursor: 'move',
+				revert: 'valid',
+				helper:'clone'
+			});
+		}
+	});
 	if(num_insert > 1 ){
 		sleep(2000);
 	}{ sleep(500); }
@@ -777,7 +765,14 @@ function refresh_table(){
 				radioClass: 'iradio_minimal'
 			});
 			return "แสดงรายการที่ "+iStart+" ถึง "+iEnd+" จาก "+iTotal+" รายการ";
-		  }
+		  },
+			"fnDrawCallback": function( oSettings ) {
+				$(".item").draggable({
+					cursor: 'move',
+					revert: 'valid',
+					helper:'clone'
+				});
+			}
 		  
 		});
 		$(".item").draggable({
@@ -796,22 +791,7 @@ function refresh_table(){
         radioClass: 'iradio_minimal'
     });
 }
-function refresh_table_single(){
-	var url = "<?php echo site_url();?>/challenge/player_control/5/<?php echo $tournament_data['tour_id'];?>";
-	$.get( url, function() {//alert( "success" );
-	})
-	.done(function(data) {
-		table.fnDestroy();
-		$("#drop-single").html(data);
-		table = $("#people").dataTable({
-			
-			"bSort": true
-		});
-	})
-	.fail(function() { 
-		$("#error").modal({ show:true});
-	});
-}
+
 function refresh_table_group_player(){
 	// get data 
 	var url = "<?php echo site_url();?>/challenge/player_control/6/<?php echo $tournament_data['tour_id'];?>/"+$("#teamId").val();
@@ -846,4 +826,4 @@ function sleep(milliseconds) {
     }
   }
 }
-</script>>
+</script>

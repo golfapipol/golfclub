@@ -20,6 +20,7 @@
 					<table id="tournament" class="table table-hover table-bordered">
 						<thead>
 							<tr>
+								<th style="width:5%">#</th>
 								<th style="width:30%">รายการแข่งขัน</th>
 								<th style="width:20%">ระยะเวลาแข่งขัน</th>
 								<th style="width:30%">ดำเนินการ</th>
@@ -29,8 +30,10 @@
 						<tbody id="table_data">
 							<?php 
 							if($tournament_data->num_rows() > 0):
+								$i = 1;
 								foreach($tournament_data->result_array() as $row):
-									echo '<tr><td>'.$row['tour_name'].'</td>';
+									echo '<tr><td>'.$i++.'</td>';
+									echo '<td>'.$row['tour_name'].'</td>';
 									
 									$TimeStart = explode("-",$row['tour_startdate']);
 									$TimeEnd = explode("-",$row['tour_enddate']);
@@ -171,7 +174,10 @@
 <script type="text/javascript">			
 var table = $("#tournament").dataTable({
 	"bLengthChange": false,
-	"bSort": true
+	"bSort": true,
+	"fnDrawCallback": function( oSettings ) {
+		jqueryon();
+	}
 });
 $(document).ready(function(){
 	jqueryon();	
@@ -200,8 +206,8 @@ function jqueryon()
 		$("#action").val(2);
 		$("#editId").val(id);
 		var row = $(this).parent().parent().parent();
-		$("#InputName").val(row.find('td:nth-child(1)').text());
-		var timerange = row.find('td:nth-child(2)').text();
+		$("#InputName").val(row.find('td:nth-child(2)').text());
+		var timerange = row.find('td:nth-child(3)').text();
 		var times = timerange.split("-");
 		var starttime = times[0].split("/");
 		var endtime = times[1].split("/");
@@ -307,7 +313,10 @@ function refresh_table(){
 		$("#table_data").html(data);
 		table = $("#tournament").dataTable({
 			"bLengthChange": false,
-			"bSort": true
+			"bSort": true,
+			"fnDrawCallback": function( oSettings ) {
+				jqueryon();
+			}
 		});
 		
 		jqueryon();

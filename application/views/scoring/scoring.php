@@ -30,7 +30,7 @@ li{cursor:pointer}
 				<div class="col-md-12 col-xs-12">
 					<div class="row">
 						<div class="col-md-4 col-xs-4">
-							<form role="form" id="scoring-form">
+							
 								<!-- Nav tabs -->
 								<ul class="nav nav-tabs" role="tablist">
 								  <li class="active"><a href="#filter_hole" role="tab" data-toggle="tab">ค้นหาจากหลุม</a></li>
@@ -87,36 +87,32 @@ li{cursor:pointer}
 											<div class="col-md-6 col-xs-6">
 												<div class="box-body">
 													<p>ส่งออกไฟล์ออกเป็นเอกสาร Excel</p>
-													<button class="btn btn-info"><i class="fa fa-download"></i> Generate Excel</button>
+													<a href="<?php echo site_url('exportFile/score/'.$tournament_data['tour_id']);?>" class="btn btn-info"><i class="fa fa-download"></i> Generate Excel</a>
 												</div>
 											</div>
 											<div class="col-md-6 col-xs-6">
-												<form role="form">
-													<div class="box-body">
-														<p>นำเข้าข้อมูลที่ได้จากเอกสาร Excel</p>
-														<div class="form-group">
-															<label for="exampleInputFile">File input</label>
-															<input type="file" id="exampleInputFile">
-															<p class="help-block">ไฟล์ที่แนบต้องเป็นไฟล์ที่ได้จากการส่งออกเท่านั้น!!</p>
-														</div>
+												<div class="box-body">
+													<p>นำเข้าข้อมูลที่ได้จากเอกสาร Excel</p>
+													<div class="form-group">
+														<label for="InputFile">File input</label>
+														<input type="file" name="InputFile" id="InputFile">
+														<p class="help-block">ไฟล์ที่แนบต้องเป็นไฟล์ที่ได้จากการส่งออกเท่านั้น!!</p>
 													</div>
-													<div class="box-footer clearfix no-border">
-														<button type="submit" class="btn btn-success pull-right" >บันทึก</button>
-													</div>
-												</form>
+												</div>
+												<div class="box-footer clearfix no-border">
+													<button type="button" id="import_submit" class="btn btn-success pull-right" >บันทึก</button>
+												</div>
 											</div>
 										</div>
 									</div>
-										
 								</div>
-							</form>
 						</div>
 						<div class="col-md-4 col-xs-4">
 							<ul class="nav nav-pills nav-stacked" id="player">
 							</ul>
 						</div>
 						<div class="col-md-4 col-xs-4">
-							<button class="btn btn-warning col-md-12" onclick="window.open('http://localhost/project/local/index.php/scoring/scoreboard/9');">Live Score</button>
+							<button class="btn btn-warning col-md-12" onclick="window.open('<?php echo site_url('scoring/scoreboard/'.$tournament_data['tour_id']);?>');">Live Score</button>
 							<!--p id="player_left">ผลการกรอกคะแนนจาก  ?? / ?? คน</p-->
 						</div>
 					</div>
@@ -337,4 +333,20 @@ function gross(){
 	});
 	$(".gross_par").text(sum);
 }
+$('#import_submit').click(function () {
+		var file_data = $('#InputFile').prop('files')[0];   
+		var form_data = new FormData();                  
+		form_data.append('file', file_data);
+		$.ajax({
+			url: '<?php echo site_url('import_score/listOfData');?>',
+			type: 'POST',
+			data: form_data,
+			cache: false,
+			contentType: false,
+			processData: false,
+			success: function (data) {
+				console.log(data);
+			}
+		});
+	});
 </script>

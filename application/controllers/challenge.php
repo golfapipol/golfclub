@@ -149,7 +149,7 @@ class Challenge extends Required {
 								echo '<i class="fa fa-fw big female">&#9792; </i><p style="display:none">2</p>';
 							endif;
 							echo '</td><td style="display:none">' . $row['player_id'] . '</td>';
-							echo '</td><td style="display:none">' . $row['team_id'] . '</td></tr>';
+							echo '</td><td style="display:none">-' . $row['team_id'] . '-</td></tr>';
 					endforeach;
 				endif;
 				break;
@@ -216,7 +216,6 @@ class Challenge extends Required {
 													$InputTeam, 
 													$TourId);
 				break;
-			
 			case 2: // add team
 				$InputName = $_POST['InputName'];
 				$TourId = $_POST['tourId'];
@@ -348,8 +347,10 @@ class Challenge extends Required {
 				$tournament_data = $this->tournament_model->getAllDesc();
 				header ('Content-type: text/html; charset=utf-8');
 				if ($tournament_data->num_rows() > 0):
+					$i = 1;
 					foreach ($tournament_data->result_array() as $row):
-						echo '<tr><td>' . $row['tour_name'] . '</td>';
+						echo '<tr><td>' . $i++ . '</td>';
+						echo '<td>' . $row['tour_name'] . '</td>';
 						$TimeStart = explode("-", $row['tour_startdate']);
 						$TimeEnd = explode("-", $row['tour_enddate']);
 						echo '<td>' . $TimeStart[2] . "/" . $TimeStart[1] . "/" . $TimeStart[0] . ' - ' . $TimeEnd[2] . "/" . $TimeEnd[1] . "/" . $TimeEnd[0] . '</td>';

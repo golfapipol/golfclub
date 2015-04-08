@@ -216,8 +216,8 @@ class Scoring extends Required {
 		foreach($livescore as $row) :
 			echo '<tr><td>' . $i++ . '</td>';
 			echo '<td>' . $row["player_name"] . '</td>';
-			echo '<td>' . $row["player_hc"] . '</td>';
 			echo '<td>' . $row['team_name'] . '</td>';
+			echo '<td>' . $row["player_hc"] . '</td>';
 			echo '<td>' . $row["hole_left"] . '</td>';
 			echo '<td>' . $row["total_score"] . '</td></tr>';
 		endforeach;

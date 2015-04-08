@@ -105,7 +105,16 @@ class Score_model extends MyModel {
 		$query = $this->db->query($sql, array($tour_id));
 		return $query;
 	}
-
+	public function getByPlayerID($player_id) {
+		$sql = "SELECT hole1_score, hole2_score, 
+						hole3_score, hole4_score, hole5_score, 
+						hole6_score, hole7_score, hole8_score, hole9_score
+				FROM score
+				WHERE score.player_id = ?
+				ORDER BY score_id";
+		$query = $this->db->query($sql, array($player_id));
+		return $query;
+	}
 }
 
 /* End of file zone_model.php */

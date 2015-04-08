@@ -40,9 +40,9 @@
 							<div class="col-lg-3 col-xs-3 col-md-3">
 								<img src="http://t0.gstatic.com/images?q=tbn:ANd9GcSlDTpISYJteBG40FqmeFFp7wEGU3rJ5YOzCWO34OFdCXvK-SnZUw" width="100%" height="100%" />
 								<div class="form-group pic-info" style="display:none">
-									<label for="exampleInputFile">รูปสนามกอล์ฟ</label>
+									<!--label for="exampleInputFile">รูปสนามกอล์ฟ</label>
 									<input type="file" id="exampleInputFile" name="InputPhoto">
-									<p class="help-block">หากต้องการเปลี่ยนรูปให้ทำการอัพโหลด</p>
+									<p class="help-block">หากต้องการเปลี่ยนรูปให้ทำการอัพโหลด</p-->
 								</div>
 							</div>
 							<div class="col-lg-9 col-xs-9 col-md-9">

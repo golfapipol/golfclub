@@ -1,16 +1,17 @@
-
-    <style>
-    .header{
-      margin-top: 5%;
-      text-align: center;
-    }
+<style>
+    .header h3{ margin-top: 5%;text-align: center; font-size:20pt; }
+    .header h4{text-align: center; font-size:18pt; }
+    .container p{font-size:16pt; }
+    .container u{font-size:16pt; }
+	th { font-size:16pt; text-align: center;}
+	td { font-size:16pt; padding:5px;text-align: center;}
     </style>
     <!-- bootstrap 3.0.2 -->
     <link href="<?php echo base_url();?>css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <div class="header">
-      <p>การแข่งขันกีฬากอล์ฟ  <?php echo $tournament_data["tour_name"];?></p>
-      <p>ระหว่าง วันที่ <?php echo $tournament_data["tour_startdate"];?> - <?php echo $tournament_data["tour_enddate"];?></p>
-      <p>สนามกอล์ฟ <?php echo $tournament_data["club_name"];?></p>
+      <h3>การแข่งขันกีฬากอล์ฟ  <?php echo $tournament_data["tour_name"];?></h3>
+      <h4>ระหว่าง วันที่ <?php echo $tournament_data["tour_startdate"];?> - <?php echo $tournament_data["tour_enddate"];?></h4>
+      <h4>สนามกอล์ฟ <?php echo $tournament_data["club_name"];?></h4>
     </div>
     <div class="container">
 		<?php 
@@ -35,7 +36,9 @@
 							echo '<td>'.$player['team_name'].'</td>';
 						endif;
 						echo '<td>'.$player['player_hc'].'</td>';
-						echo '<td>'.$player['player_age'].'</td>';
+						echo '<td>';
+						echo ($player['player_age'] == 0)? '-': $player['player_age'];
+						echo '</td>';
 						if ($player['player_sex'] == 1):
 							echo '<td> ชาย </td>';
 						else:

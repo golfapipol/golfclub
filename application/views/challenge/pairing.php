@@ -160,7 +160,7 @@
 						<input type="hidden" name="playerId" id="playerId" placeholder="playerId" />
 						
 					</form>
-					<a href="<?php echo site_url("exportFile/testingpairing/".$tournament_data['tour_id'])?>"class="btn btn-info pull-right"><i class="fa fa-download"></i> ส่งออกเป็น PDF</a>
+					<a href="<?php echo site_url("exportFile/pairing/".$tournament_data['tour_id'])?>"class="btn btn-info pull-right"><i class="fa fa-download"></i> ส่งออกเป็น PDF</a>
 				</div>
 			</div>
 		</div>
@@ -177,7 +177,7 @@
                                             <label>กรองโดยทีม</label>
                                             <select id="filter_team"class="form-control" onchange="filter_team()"><option value="0">ทั้งหมด</option>';
 							   foreach($team_data->result_array() as $team):
-									echo '<option value="'.$team['team_id'].'">'.$team['team_name'].'</option>';
+									echo '<option value="-'.$team['team_id'].'-">'.$team['team_name'].'</option>';
 								endforeach;
                                 echo '</select></div>';
 								
@@ -211,7 +211,7 @@
 										echo '<i class="fa fa-fw big female">&#9792; </i><p style="display:none">2</p>';
 									endif;
 									echo '</td><td style="display:none">'.$row['player_id'].'</td>';
-									echo '</td><td style="display:none">'.$row['team_id'].'</td></tr>';
+									echo '</td><td style="display:none">-'.$row['team_id'].'-</td></tr>';
 							endforeach;
 						endif;?>
 						</tbody>
@@ -402,11 +402,19 @@ var table = $("#people").dataTable({
 				radioClass: 'iradio_minimal'
 			});
 			return "แสดงรายการที่ "+iStart+" ถึง "+iEnd+" จาก "+iTotal+" รายการ";
-		  }
+		  },
+		 "fnDrawCallback": function( oSettings ) {
+			$(".item").draggable({
+				cursor: 'move',
+				revert: 'valid',
+				helper:'clone'
+			});
+		}
     });
 var pairing_table = $("#pairing-table").dataTable({
 	"bLengthChange": false,
 	"bFilter": false,
+	
 });
 $(".item").draggable({
 	cursor: 'move',
@@ -511,7 +519,7 @@ function add_group(){
 			cache: false,
 			data: $('#add-form').serialize(),
 			success: function(json){},
-			error: function(request, status, error) {$("#error").modal({ show:true});}
+			error: function(request, status, error) {}
 		});
 	jqueryon();
 }
@@ -535,7 +543,7 @@ function remove_group(){
 		cache: false,
 		data: $('#add-form').serialize(),
 		success: function(json){},
-		error: function(request, status, error) {$("#error").modal({ show:true});}
+		error: function(request, status, error) {}
 	});
 	refresh_table_player();
 }
@@ -575,8 +583,15 @@ function refresh_table_player(){
 					radioClass: 'iradio_minimal'
 				});
 				return "แสดงรายการที่ "+iStart+" ถึง "+iEnd+" จาก "+iTotal+" รายการ";
-			  }
-		});
+			  },
+			 "fnDrawCallback": function( oSettings ) {
+				$(".item").draggable({
+					cursor: 'move',
+					revert: 'valid',
+					helper:'clone'
+				});
+			 }
+			});
 		filter_team();
 		$(".item").draggable({
 			cursor: 'move',
@@ -608,7 +623,7 @@ function filter_team() {
 	if(filter == "0"){ 
 		table.fnFilter("",6);
 	}else {
-		table.fnFilter( filter,6);
+		table.fnFilter(filter,6);
 	}
 }
 </script>
