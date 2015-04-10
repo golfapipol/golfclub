@@ -95,6 +95,51 @@ class Tour_player_model extends MyModel {
 		$query = $this->db->query($sql, array($player_id, $field_id));
 		return $query;
 	}
+	public function getScoreCardByMemberId($player_id, $field_id, $tour_id) {
+		$sql = "SELECT * 
+				FROM tour_player 
+				LEFT JOIN score ON tour_player.player_id = score.player_id 
+				WHERE tour_player.tour_id = ?
+				AND tour_player.member_player_id = ? 
+				AND score.field_id = ?";
+		$query = $this->db->query($sql, array($tour_id, $player_id, $field_id));
+		return $query;
+	}
+	public function getScoreCardByPlayerId($player_id, $field_id, $tour_id) {
+		$sql = "SELECT * 
+				FROM tour_player 
+				LEFT JOIN score ON tour_player.player_id = score.player_id 
+				WHERE tour_player.tour_id = ?
+				AND tour_player.player_id = ? 
+				AND score.field_id = ?";
+		$query = $this->db->query($sql, array($tour_id, $player_id, $field_id));
+		return $query;
+	}
+	public function getPlayerByTourId($member, $id) {
+		$sql = "SELECT * 
+				FROM tour_player 
+				WHERE tour_id = ?
+				AND member_player_id = ?";
+		$query = $this->db->query($sql, array($id, $member));
+		return $query;
+	}
+	public function getPlayer($playerid, $id) {
+		$sql = "SELECT * 
+				FROM tour_player
+				INNER JOIN score
+				ON tour_player.player_id = score.player_id
+				WHERE tour_player.tour_id = ?
+				AND tour_player.player_id = ?";
+		$query = $this->db->query($sql, array($id, $playerid));
+		return $query;
+	}
+	public function getPlayerByTeamId($id) {
+		$sql = "SELECT * 
+				FROM tour_player 
+				WHERE team_id = ?";
+		$query = $this->db->query($sql, array($id));
+		return $query;
+	}
 }
 
 /* End of file zone_model.php */

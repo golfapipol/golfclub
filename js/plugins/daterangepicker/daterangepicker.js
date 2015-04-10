@@ -1064,8 +1064,8 @@
             } else {
                 html += '<th></th>';
             }
-
-            var dateHtml = this.locale.monthNames[calendar[1][1].month()] + calendar[1][1].format(" YYYY");
+			var BeEra = parseInt(calendar[1][1].format("YYYY"),10) + 543;
+            var dateHtml = this.locale.monthNames[calendar[1][1].month()] + " " + BeEra;
 
             if (this.showDropdowns) {
                 dateHtml = this.renderDropdowns(calendar[1][1], minDate, maxDate);

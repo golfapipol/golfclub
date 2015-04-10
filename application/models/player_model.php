@@ -105,7 +105,7 @@ class Player_model extends MyModel {
 		return $this->last_insert_id;
 	}
 	public function getHistory($member_id) {
-		$sql = "SELECT player_hc, SUM( gross_score ) as total_score, tour_name
+		$sql = "SELECT player_hc, SUM( gross_score ) as total_score, tour_name, tournament.tour_id
 				FROM  score 
 				INNER JOIN tour_player ON score.player_id = tour_player.player_id
 				INNER JOIN tournament ON tournament.tour_id = score.tour_id

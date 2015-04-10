@@ -192,6 +192,9 @@ class Scoring extends Required {
 		foreach ($players as $key => $player) :
 			$count = 0;
 			$holeLeft = $this->score_model->countHoleLeft($player['player_id']);
+			$isOUT = 0;
+			$players[$key]['out'] = 0;
+			$players[$key]['in'] = 0;
 			foreach ($holeLeft->result_array() as $Left) :
 				if ($Left['hole1_score'] != null)	$count++; 
 				if ($Left['hole2_score'] != null)	$count++; 
@@ -202,6 +205,12 @@ class Scoring extends Required {
 				if ($Left['hole7_score'] != null)	$count++; 
 				if ($Left['hole8_score'] != null)	$count++; 
 				if ($Left['hole9_score'] != null)	$count++; 
+				if ($isOUT == 0):
+					$players[$key]['out'] = $Left['gross_score'];
+					$isOUT++;
+				else:
+					$players[$key]['in'] = $Left['gross_score'];
+				endif;
 			endforeach;
 			$players[$key]['hole_left'] = $count;
 		endforeach;
@@ -218,7 +227,9 @@ class Scoring extends Required {
 			echo '<td>' . $row["player_name"] . '</td>';
 			echo '<td>' . $row['team_name'] . '</td>';
 			echo '<td>' . $row["player_hc"] . '</td>';
-			echo '<td>' . $row["hole_left"] . '</td>';
+			echo '<td>' . $row['hole_left'] . '</td>';
+			echo '<td>' . $row['out'] . '</td>';
+			echo '<td>' . $row['in'] . '</td>';
 			echo '<td>' . $row["total_score"] . '</td></tr>';
 		endforeach;
 	}

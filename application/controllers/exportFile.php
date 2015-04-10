@@ -12,11 +12,14 @@ class ExportFile extends Required {
 		$this->load->model('tour_team_model');
 		$this->load->model('pairing_model');
 		$this->load->model('score_model');
+		$this->load->model('format_time_model');
 		
 	}
 	public function pairing($tourId) {
 		header('Content-type: application/pdf');
 		$data['tournament_data'] = $this->tournament_model->getById($tourId)->row_array();
+		$data['tournament_data']['tour_startdate'] = $this->format_time_model->formatToText($data['tournament_data']['tour_startdate']);
+		$data['tournament_data']['tour_enddate'] = $this->format_time_model->formatToText($data['tournament_data']['tour_enddate']);
 		$data['player_data'] = $this->tour_player_model->pairingHoleGroup($tourId)->result_array();
 		$data['hole_data'] = $this->tour_field_model->getFirstField($tourId)->result_array();
 		$this->load->library('mpdflib/mpdf');
@@ -29,6 +32,8 @@ class ExportFile extends Required {
 	}
 	public function testingpairing($tourId) {
 		$data['tournament_data'] = $this->tournament_model->getById($tourId)->row_array();
+		$data['tournament_data']['tour_startdate'] = $this->format_time_model->formatToText($data['tournament_data']['tour_startdate']);
+		$data['tournament_data']['tour_enddate'] = $this->format_time_model->formatToText($data['tournament_data']['tour_enddate']);
 		$data['player_data'] = $this->tour_player_model->pairingHoleGroup($tourId)->result_array();
 		$data['hole_data'] = $this->tour_field_model->getFirstField($tourId)->result_array();
 		$this->load->library('mpdflib/mpdf');
@@ -54,14 +59,16 @@ class ExportFile extends Required {
 		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(5);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(5);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(5);
-		foreach(range('F','Z') as $char):
+		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(5);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(5);
+		foreach(range('H','Z') as $char):
 			$objPHPExcel->getActiveSheet()->getColumnDimension($char)->setWidth(9);
 		endforeach;
 		$objPHPExcel->getActiveSheet()->setCellValue('A1', $tournament_data['tour_id']);
 		$objPHPExcel->getActiveSheet()->setCellValue('B1', $tournament_data['tour_name']);
-		$objPHPExcel->getActiveSheet()->mergeCells('B1:E1');
+		$objPHPExcel->getActiveSheet()->mergeCells('B1:G1');
 		$field_limit = count($field_data);
-		$column = 'F';
+		$column = 'H';
 		$default_border = array('style' => PHPExcel_Style_Border::BORDER_THIN,'color' => array('rgb'=>'1006A3'));
 		$color = array(0=> 'FF8080', 1 =>'FF6600', 2 =>'0000FF', 3=>'00FFFF', 4=>'FFFFCC');
 		$style_header = array(
@@ -95,12 +102,16 @@ class ExportFile extends Required {
 		$objPHPExcel->getActiveSheet()->setCellValue('C2', 'เพศ');
 		$objPHPExcel->getActiveSheet()->setCellValue('D2', 'อายุ');
 		$objPHPExcel->getActiveSheet()->setCellValue('E2', 'HC');
+		$objPHPExcel->getActiveSheet()->setCellValue('F2', 'OUT');
+		$objPHPExcel->getActiveSheet()->setCellValue('G2', 'IN');
 		$objPHPExcel->getActiveSheet()->getStyle('A2')->applyFromArray($style_header);
 		$objPHPExcel->getActiveSheet()->getStyle('B2')->applyFromArray($style_header);
 		$objPHPExcel->getActiveSheet()->getStyle('C2')->applyFromArray($style_header);
 		$objPHPExcel->getActiveSheet()->getStyle('D2')->applyFromArray($style_header);
 		$objPHPExcel->getActiveSheet()->getStyle('E2')->applyFromArray($style_header);
-		$field_start = 0; $column = 'F';
+		$objPHPExcel->getActiveSheet()->getStyle('F2')->applyFromArray($style_header);
+		$objPHPExcel->getActiveSheet()->getStyle('G2')->applyFromArray($style_header);
+		$field_start = 0; $column = 'H';
 		$field_count = count($field_data);
 		foreach ($field_data as $par): 
 			$objPHPExcel->getActiveSheet()->setCellValue(($column++).'2', $par['hole1_par']);
@@ -112,7 +123,7 @@ class ExportFile extends Required {
 			$objPHPExcel->getActiveSheet()->setCellValue(($column++).'2', $par['hole7_par']);
 			$objPHPExcel->getActiveSheet()->setCellValue(($column++).'2', $par['hole8_par']);
 			$objPHPExcel->getActiveSheet()->setCellValue(($column).'2', $par['hole9_par']);
-			$objPHPExcel->getActiveSheet()->getStyle('F2:'.($column++).'2')->applyFromArray($style_header);
+			$objPHPExcel->getActiveSheet()->getStyle('H2:'.($column++).'2')->applyFromArray($style_header);
 		endforeach;
 		$row = 3; $column = 'A';
 		foreach ($player_data as $player): //player
@@ -124,6 +135,8 @@ class ExportFile extends Required {
 			$objPHPExcel->getActiveSheet()->setCellValue(($column++).$row, $player_sex);
 			$objPHPExcel->getActiveSheet()->setCellValue(($column++).$row, $player_age);
 			$objPHPExcel->getActiveSheet()->setCellValue(($column++).$row, $player['player_hc']);
+			$objPHPExcel->getActiveSheet()->setCellValue(($column++).$row, '=SUM(H'.$row.':P'.$row.')');
+			$objPHPExcel->getActiveSheet()->setCellValue(($column++).$row, '=SUM(Q'.$row.':Y'.$row.')');
 			if (count($player['scores']) == 2):
 				foreach ($player['scores'] as $score):
 					$objPHPExcel->getActiveSheet()->setCellValue(($column++).$row, $score['hole1_score']);

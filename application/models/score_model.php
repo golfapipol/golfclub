@@ -67,8 +67,19 @@ class Score_model extends MyModel {
 				LEFT JOIN tour_team ON tour_player.team_id = tour_team.team_id
 				WHERE score.tour_id = ?
 				GROUP BY (score.player_id) 
-				ORDER BY (total_score)
+				ORDER BY total_score desc
 				Limit 10";
+		$query = $this->db->query($sql, array($tour_id));
+		return $query;
+	}
+	public function getScore($tour_id) {
+		$sql = "SELECT tour_player.tour_id, score.player_id, player_name, player_age, player_sex, player_hc, SUM( gross_score ) as total_score, (SUM( gross_score ) - player_hc) as net_score, IFNULL(team_name,'-') as team_name
+				FROM  score 
+				INNER JOIN tour_player ON score.player_id = tour_player.player_id 
+				LEFT JOIN tour_team ON tour_player.team_id = tour_team.team_id
+				WHERE score.tour_id = ?
+				GROUP BY (score.player_id) 
+				ORDER BY net_score desc,total_score desc, player_hc ";
 		$query = $this->db->query($sql, array($tour_id));
 		return $query;
 	}
@@ -108,7 +119,7 @@ class Score_model extends MyModel {
 	public function getByPlayerID($player_id) {
 		$sql = "SELECT hole1_score, hole2_score, 
 						hole3_score, hole4_score, hole5_score, 
-						hole6_score, hole7_score, hole8_score, hole9_score
+						hole6_score, hole7_score, hole8_score, hole9_score, gross_score
 				FROM score
 				WHERE score.player_id = ?
 				ORDER BY score_id";

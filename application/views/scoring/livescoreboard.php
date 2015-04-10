@@ -37,7 +37,7 @@
 		<div class="content">
 			<div class="box">
 				<div class="box-header">
-					<h1 style="text-align:center"><button class="btn btn-danger">Live</button>ผลการแข่งขันล่าสุด ชลบุรีเกมส์ ครั้งที่ 41</h1>
+					<h1 style="text-align:center"><button class="btn btn-danger">Live</button>ผลการแข่งขันล่าสุด <?php echo $tournament_data['tour_name'];?></h1>
 				</div>
 				<div class="box-body no-padding">
 					<table class="table table-condensed" id="scoreboard">
@@ -48,6 +48,8 @@
 								<th>Team</th>
 								<th>HC</th>
 								<th>Thru</th>
+								<th>OUT</th>
+								<th>IN</th>
 								<th>Total</th>
 							</tr>
 						</thead>
@@ -60,6 +62,8 @@
 								echo '<td>' . $row['team_name'] . '</td>';
 								echo '<td>' . $row["player_hc"] . '</td>';
 								echo '<td>' . $row["hole_left"] . '</td>';
+								echo '<td>' . $row["out"] . '</td>';
+								echo '<td>' . $row["in"] . '</td>';
 								echo '<td>' . $row["total_score"] . '</td></tr>';
 							endforeach;?>
 						</tbody></table>

@@ -1,4 +1,6 @@
 <style>.flightinput{width:70%;text-align:center} .modal-dialog { width: 80%; margin: 30px auto;} a:hover{cursor:pointer;}</style>
+<!-- ParColor -->
+<link href="<?php echo base_url();?>css/golfclub/parcolor.css" rel="stylesheet" type="text/css" />
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>ผลการแข่งขัน<small>Summary Result</small></h1>
@@ -43,7 +45,16 @@
 	</div>
 	<div class="box">
 		<div class="box-header">
-			<h3 style="text-align:center;">Bordered Table</h3>
+			<h3 style="text-align:center;">
+				ผลการแข่งขันประเภทบุคคล 
+			<?php echo $tournament['tour_name'];
+				if($tournament['tour_scoretype'] == 1):
+					echo ' (Stroke Play)';
+				elseif($tournament['tour_scoretype'] == 2):
+					echo ' (Stable Ford)';
+				endif;
+			?> 
+			</h3>
 		</div><!-- /.box-header -->
 		<div class="box-body">
 			<div class="row">	
@@ -79,73 +90,36 @@
 							<th>Flight</th>
 							<th style="display:none">Flight</th>
 							<th>Handicap</th>
-							<th>IN</th>
 							<th>OUT</th>
+							<th>IN</th>
 							<th>Gross Score</th>
 							<th>Net Score</th>
 						</tr>
 						</thead>
 						<tbody>
-						<tr>
-							<td>1.</td>
-							<td><a class="player" value="1">Update software</a></td>
-							<td>
-								<div class="progress xs">
-									<div class="progress-bar progress-bar-danger" style="width: 55%"></div>
-								</div>
-							</td>
-							<td style="display:none">79</td>
-							<td><span class="badge bg-red">55%</span></td>
-							<td><span class="badge bg-red">55%</span></td>
-							<td><span class="badge bg-red">55%</span></td>
-							<td><span class="badge bg-red">55%</span></td>
-							<td><span class="badge bg-red">55%</span></td>
-						</tr>
-						<tr>
-							<td>2.</td>
-							<td>Clean database</td>
-							<td>
-								<div class="progress xs">
-									<div class="progress-bar progress-bar-yellow" style="width: 70%"></div>
-								</div>
-							</td>
-							<td style="display:none">80</td>
-							<td><span class="badge bg-yellow">70%</span></td>
-							<td><span class="badge bg-yellow">70%</span></td>
-							<td><span class="badge bg-yellow">70%</span></td>
-							<td><span class="badge bg-yellow">70%</span></td>
-							<td><span class="badge bg-yellow">70%</span></td>
-						</tr>
-						<tr>
-							<td>3.</td>
-							<td>Cron job running</td>
-							<td>
-								<div class="progress xs progress-striped active">
-									<div class="progress-bar progress-bar-primary" style="width: 30%"></div>
-								</div>
-							</td>
-							<td style="display:none">81</td>
-							<td><span class="badge bg-light-blue">30%</span></td>
-							<td><span class="badge bg-light-blue">30%</span></td>
-							<td><span class="badge bg-light-blue">30%</span></td>
-							<td><span class="badge bg-light-blue">30%</span></td>
-							<td><span class="badge bg-light-blue">30%</span></td>
-						</tr>
-						<tr>
-							<td>4.</td>
-							<td>Fix and squish bugs</td>
-							<td>
-								<div class="progress xs progress-striped active">
-									<div class="progress-bar progress-bar-success" style="width: 90%"></div>
-								</div>
-							</td>
-							<td style="display:none">82</td>
-							<td><span class="badge bg-green">90%</span></td>
-							<td><span class="badge bg-green">90%</span></td>
-							<td><span class="badge bg-green">90%</span></td>
-							<td><span class="badge bg-green">90%</span></td>
-							<td><span class="badge bg-green">90%</span></td>
-						</tr>
+						<?php 
+							$i = 1;
+							foreach($player_data as $player):
+								echo '<tr><td><a class="player" value="'.$player['player_id'].'">' . $i++ . '</a></td>';
+								echo '<td><a class="player" value="'.$player['player_id'].'">'. $player['player_name'] . '</a></td>';
+								foreach($flights as $flight):
+									if (($flight['flight_startrange'] <= $player['player_hc']) && ($flight['flight_endrange'] >= $player['player_hc'])):
+										if($tournament['tour_flightdivide'] == 1):
+											echo '<td><a class="player" value="'.$player['player_id'].'">'.$flight['flight_name'].'</a></td><td style="display:none">'.$flight['flight_id'].'</td>';
+										elseif($tournament['tour_flightdivide']== 2 && ($flight['flight_type'] == $player['player_sex'])):
+											echo ($flight['flight_type'] == 1)? '<td><a class="player" value="'.$player['player_id'].'">ชาย'.$flight['flight_name'].'</a></td>': '<td><a class="player" value="'.$player['player_id'].'">หญิง'.$flight['flight_name'].'</a></td>';
+											echo '<td><a class="player" value="'.$player['player_id'].'">'.$flight['flight_id'].'</a></td>';
+										endif;
+										break;
+									endif;
+								endforeach;
+								echo '<td><a class="player" value="'.$player['player_id'].'">' . $player['player_hc'] . '</a></td>';
+								echo '<td><a class="player" value="'.$player['player_id'].'">' . $player['out'] . '</a></td>';
+								echo '<td><a class="player" value="'.$player['player_id'].'">' . $player['in'] . '</a></td>';
+								echo '<td><a class="player" value="'.$player['player_id'].'">' . $player['total_score'] . '</a></td>';
+								echo '<td><a class="player" value="'.$player['player_id'].'">' . $player['net_score'] . '</a></td></tr>';
+							endforeach;
+						?>
 					</tbody></table>
 		
 				</div>
@@ -162,9 +136,9 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-          <h4 class="modal-title" id="myLargeModalLabel">Large modal<a class="anchorjs-link" href="#myLargeModalLabel"><span class="anchorjs-icon"></span></a></h4>
+          <h4 class="modal-title" id="myLargeModalLabel">ผลการแข่งขัน <?php echo $tournament['tour_name'];?><a class="anchorjs-link" href="#myLargeModalLabel"><span class="anchorjs-icon"></span></a></h4>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" id="modal-body">
           <h1>Name </h1>
 		  <p> HC : 24</p>
 		  <table class="table table-bordered">
@@ -237,7 +211,6 @@
 				<th>36</th>
 				<th>36</th>
 			</tr>
-			
 		</tbody></table>
         </div>
       </div><!-- /.modal-content -->
@@ -265,13 +238,65 @@ $('.filter').click(function(e){
 
 $('.player').click(function () {
 	var value = $(this).attr('value');
-	var url = "<?php echo site_url('summary/getPlayerSummary');?>/" + value;
+	var url = "<?php echo site_url('summary/getPlayerSummary');?>/" + value + "/<?php echo $tournament['tour_id'];?>";
 	$.get( url, function() {})
 	.done(function(data) {
 		console.log(data);
-		//$().html(data);
+		$("#modal-body").html(data);
+		addColor();
 		$('#player_summary').modal('show');
 	});
 	
 });
+function addColor(){
+	$(".gross").each(function () {
+		var id = $(this).attr('id');
+		var par = $("#hole" + id).text();
+		var gross = $(this).text();
+		if (gross != "" && par != "") {
+			var number = parseInt(gross, 10) - parseInt(par, 10); 
+			switch(number) {
+				case 0:
+					$(this).addClass("par");
+				break;
+				case 1:
+					$(this).addClass("bogey");
+				break;
+				case 2:
+					$(this).addClass("doublebogey");
+				break;
+				case 3:
+					$(this).addClass("manybogey");
+				break;
+				case -1:
+					$(this).addClass("birdie");
+				break;
+				case -2:
+					if (par == 3) {
+						$(this).addClass("holeinone");
+					} else {
+						$(this).addClass("eagle");
+					}
+				break;
+				case -3:
+					if (par == 4) {
+						$(this).addClass("holeinone");
+					} else {
+						$(this).addClass("albatross");
+					}
+				break;
+				case -4:
+					if (par == 5) {
+						$(this).addClass("holeinone");
+					} else {
+						$(this).addClass("albatross");
+					}
+				break;
+				default: // > 3
+					$(this).addClass("manybogey");
+				break;
+			}
+		}
+	});
+}
 </script>

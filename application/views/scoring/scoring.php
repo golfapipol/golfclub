@@ -172,7 +172,7 @@ li{cursor:pointer}
 				<h4 class="modal-title">เกิดข้อผิดพลาด</h4>
 			</div>
 			<div class="modal-body">
-				เกิดข้อผิดพลาด ขณะทำการส่งข้อมูล โปรดติดต่อผู้ดูแลระบบ
+				เกิดข้อผิดพลาด ขณะทำการส่งข้อมูล หรือการดึงข้อมูลของท่านมีปัญหา
 			</div>
 			<div class="modal-footer clearfix">
 				<button type="button" class="btn btn-danger" data-dismiss="modal">ตกลง</button>
@@ -338,14 +338,25 @@ $('#import_submit').click(function () {
 		var form_data = new FormData();                  
 		form_data.append('file', file_data);
 		$.ajax({
-			url: '<?php echo site_url('import_score/listOfData');?>',
+			url: '<?php echo site_url('import_score/listOfData/'.$tournament_data['tour_id']);?>',
 			type: 'POST',
 			data: form_data,
 			cache: false,
 			contentType: false,
 			processData: false,
 			success: function (data) {
+				if(data == "error") {
+					$("#error").modal({ show:true});
+				} else {
+					$('#message').modal({ show:true});
+				}
+				
 				console.log(data);
+			},
+			error: function(e){
+				//alert(e);
+				$("#remove-modal").modal('hide');
+				$("#error").modal({ show:true});
 			}
 		});
 	});

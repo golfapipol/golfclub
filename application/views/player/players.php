@@ -16,62 +16,6 @@ tr:hover { cursor: pointer;}
 <!-- Main content -->
 <section class="content">
 	<h4 class="page-header">ข้อมูลสมาชิก</h4>
-		<!--div class="box box-primary" >
-			<div class="box-header">
-				<h3 class="box-title">ค้นหาแบบละเอียด</h3>
-			</div>
-			<form role="form">
-			<div class="box-body table-responsive ">
-				<div class="row">
-					<div class="col-md-3 col-xs-3">
-						<div class="form-group">
-							<label for="searchName">ชื่อ - นามสกุล</label>
-							<input type="text" class="form-control" id="searchName" name="searchName" placeholder="ค้นหาจากชื่อ - นามสกุล">
-						</div>
-					</div>
-					<div class="col-md-3 col-xs-3">
-						<div class="form-group">
-							<label for="searchName">สถานะผู้เล่น</label>
-							<select class="form-control">
-								<option>option 1</option>
-								<option>option 2</option>
-								<option>option 3</option>
-								<option>option 4</option>
-								<option>option 5</option>
-							</select>
-						</div>
-					</div>
-					<div class="col-md-3 col-xs-3">
-						<div class="form-group"> 
-							<label>เพศ</label>
-							<div class="radio">
-								<label>
-									<input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
-									ทั้งหมด
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
-									ชาย
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="optionsRadios" id="optionsRadios3" value="option3" />
-									หญิง
-								</label>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3 col-xs-3">
-						<a class="btn btn-block btn-primary add" ><i class="fa fa-search"></i>&nbsp;&nbsp;ค้นหา</a>
-					</div>
-				</div>
-			</div>
-			</form>
-		</div-->
-	
 		<div class="box box-primary" >
 			<div class="box-header">
 				<h3 class="box-title">รายชื่อสมาชิกทั้งหมด</h3>
@@ -90,27 +34,6 @@ tr:hover { cursor: pointer;}
 								</tr>
 							</thead>
 							<tbody id="table_data">
-								<?php if($player_data->num_rows() > 0):
-										foreach($player_data->result_array() as $row):
-											echo '<tr><td>'.$row['player_id'].'</td>';
-											echo '<td>'.$row['player_name'].'</td>';
-											if ($row['player_sex'] == 1): //male
-												echo "<td><i class='fa fa-fw big male'>&#9794; </i>
-													<p style='display:none' value='1'>1</p></td>";
-											elseif($row['player_sex'] == 2): //female
-												echo "<td><i class='fa fa-fw big female'>&#9792; </i>
-													<p style='display:none' value='2'>2</p></td>";
-											endif;
-											echo '<td>'.$row['status_name'].'</td>';
-											echo '<td>
-												<div class="btn-group">
-													<a href="'.site_url("playerinfo/player_profile").'/'.$row['player_id'].'" class="btn btn-success btn-flat edit" data-toggle="tooltip" data-original-title="โปรไฟล์" ><i class="fa fa-fw fa-user"></i></a>
-													<a href="'.site_url("playerinfo/editPlayer").'/'.$row['player_id'].'" class="btn btn-warning btn-flat edit" data-toggle="tooltip" data-original-title="แก้ไข" ><i class="fa fa-edit"></i></a>
-													<button type="button" class="btn btn-danger btn-flat remove" data-toggle="tooltip" data-original-title="ลบ" value="'.$row['player_id'].'"><i class="fa fa-fw fa-trash-o"></i></button>
-												</div>
-											</td>';
-										endforeach;
-								endif;?>
 							</tbody>
 						</table>
 					</div>
@@ -120,6 +43,11 @@ tr:hover { cursor: pointer;}
 					</div>
 				</div>
 			</div><!-- /.box-body -->
+			<!-- Loading (remove the following to stop the loading)-->
+			<div class="overlay"></div>
+			<div class="loading-img"></div>
+			
+			<!-- end loading -->
 		</div>
 	
 </section><!-- /.content -->
@@ -182,12 +110,12 @@ tr:hover { cursor: pointer;}
 		
 <script type="text/javascript">
 	var table = $("#data").dataTable({
-		"bLengthChange": false,
+		"bLengthChange": true,
 		"bSort": true
 	});
 	$(document).ready(function(){
 		jqueryon();
-		
+		refresh_table();
 	});
 	function jqueryon()
 	{
@@ -227,13 +155,17 @@ tr:hover { cursor: pointer;}
 			table.fnDestroy();
 			$("#table_data").html(data);
 			table = $("#data").dataTable({
-				"bLengthChange": false,
+				"bLengthChange": true,
 				"bSort": true
 			});
 			jqueryon();
 		})
 		.fail(function() { 
 			$("#error").modal({ show:true});
+		})
+		.always(function() {
+			$(".overlay").remove();
+			$(".loading-img").remove();
 		});
 		
 	}

@@ -35,6 +35,13 @@ class Tour_team_model extends MyModel {
 		$query = $this->db->query($sql, array($tourid));
 		return $query;
 	}
+	public function getByTourIdWithTeamScore($tourid) {
+		$sql = "SELECT *, null as team_score FROM tour_team 
+		WHERE tournament_tour_id = ? ";
+		$query = $this->db->query($sql, array($tourid));
+		return $query;
+	}
+	
 	public function getByTeamId($teamid) {
 		$sql = "SELECT * FROM tour_team 
 		WHERE team_id = ? ";

@@ -1,4 +1,6 @@
-<style>.flightinput{width:70%;text-align:center}  .modal-dialog { width: 80%; margin: 30px auto;}</style>
+<style>.flightinput{width:70%;text-align:center} a:hover{cursor:pointer;}  .modal-dialog { width: 80%; margin: 30px auto;}</style>
+<!-- ParColor -->
+<link href="<?php echo base_url();?>css/golfclub/parcolor.css" rel="stylesheet" type="text/css" />
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>ผลการแข่งขัน<small>Summary Result</small></h1>
@@ -43,7 +45,7 @@
 	</div>
 	<div class="box">
 		<div class="box-header">
-			<h3 style="text-align:center;">ผลการแข่งขันประเภททีม</h3>
+			<h3 style="text-align:center;">ผลการแข่งขันประเภททีม <?php echo $tournament['tour_name'];?></h3>
 		</div><!-- /.box-header -->
 		<div class="box-body">
 			<div class="row">
@@ -58,22 +60,20 @@
 						</thead>
 						<tbody>
 						<?php 
-							if (count($team_score) > 0):
+							if (count($team_data) > 0):
 								$i = 1;
-								foreach($team_score as $team):
-									echo '<tr><td>'.$i.'</td><td><a class="team" value="'. $team['team_id'].'">'. $team['team_name'] .'</a></td><td>'. $team['team_score'] .'</td></tr>';
+								foreach($team_data as $team):
+									echo '<tr><td><a class="team" value="'. $team['team_id'].'">'.$i++.'</a></td><td><a class="team" value="'. $team['team_id'].'">'. $team['team_name'] .'</a></td><td><a class="team" value="'. $team['team_id'].'">'. $team['team_score'] .'</a></td></tr>';
 								endforeach;
 							else:
 								echo '<tr><td colspan="3">ไม่พบข้อมูลผลการแข่งขัน</td></tr>';
 							endif;
 						?>
 					</tbody></table>
-		
 				</div>
 			</div>
 		</div><!-- /.box-body -->
 		<div class="box-footer clearfix">
-			
 		</div>
 	</div>
 </section><!-- /.content -->
@@ -83,170 +83,9 @@
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-          <h4 class="modal-title" id="myLargeModalLabel">Large modal<a class="anchorjs-link" href="#myLargeModalLabel"><span class="anchorjs-icon"></span></a></h4>
+          <h4 class="modal-title" id="myLargeModalLabel">ผลการแข่งขันประเภททีม<a class="anchorjs-link" href="#myLargeModalLabel"><span class="anchorjs-icon"></span></a></h4>
         </div>
-        <div class="modal-body">
-          <h1>Team Name </h1>
-		  <p> Total HC : 24</p>
-		  <table class="table table-bordered">
-			<tbody>
-			<tr>
-				<th>Hole</th>
-				<th>1</th>
-				<th>2</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>6</th>
-				<th>7</th>
-				<th>8</th>
-				<th>9</th>
-				<th>OUT</th>
-				<th>Total</th>
-				<th>Hole</th>
-				<th>1</th>
-				<th>2</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>6</th>
-				<th>7</th>
-				<th>8</th>
-				<th>9</th>
-				<th>OUT</th>
-				<th>Total</th>
-			</tr>
-			<tr>
-				<th>Par</th>
-				<th>5</th>
-				<th>4</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>36</th>
-				<th>72</th>
-				<th>Par</th>
-				<th>5</th>
-				<th>4</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>36</th>
-				<th>72</th>
-			</tr>
-			<tr>
-				<th>John</th>
-				<th>5</th>
-				<th>4</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>36</th>
-				<th>76</th>
-				<th>John</th>
-				<th>5</th>
-				<th>4</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>36</th>
-				<th>76</th>
-			</tr>
-			<tr>
-				<th>Jane</th>
-				<th>5</th>
-				<th>4</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>36</th>
-				<th>36</th>
-				<th>Jane</th>
-				<th>5</th>
-				<th>4</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>36</th>
-				<th>36</th>
-			</tr>
-			<tr>
-				<th>Tim</th>
-				<th>5</th>
-				<th>4</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>36</th>
-				<th>36</th>
-				<th>Tim</th>
-				<th>5</th>
-				<th>4</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>36</th>
-				<th>36</th>
-			</tr>
-			<tr>
-				<th>Sam</th>
-				<th>5</th>
-				<th>4</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>36</th>
-				<th>36</th>
-				<th>Sam</th>
-				<th>5</th>
-				<th>4</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>4</th>
-				<th>5</th>
-				<th>3</th>
-				<th>36</th>
-				<th>36</th>
-			</tr>
-		</tbody></table>
+        <div class="modal-body" id="summary_body">
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -259,7 +98,8 @@ $('.team').click(function () {
 	$.get( url, function() {})
 	.done(function(data) {
 		console.log(data);
-		//$().html(data);
+		$("#summary_body").html(data);
+		addColor();
 		$('#team_summary').modal('show');
 	});
 });
@@ -267,4 +107,56 @@ var table = $("#scoreboard").dataTable({
 				"bLengthChange": false,
 				"bSort": true,"aaSorting": [[ 3, "asc" ]]
 			});
+function addColor(){
+	$(".gross").each(function () {
+		var id = $(this).attr('id');
+		var par = $("#hole" + id).text();
+		var gross = $(this).text();
+		if (gross != "" && par != "") {
+			var number = parseInt(gross, 10) - parseInt(par, 10); 
+			switch(number) {
+				case 0:
+					$(this).addClass("par");
+				break;
+				case 1:
+					$(this).addClass("bogey");
+				break;
+				case 2:
+					$(this).addClass("doublebogey");
+				break;
+				case 3:
+					$(this).addClass("manybogey");
+				break;
+				case -1:
+					$(this).addClass("birdie");
+				break;
+				case -2:
+					if (par == 3) {
+						$(this).addClass("holeinone");
+					} else {
+						$(this).addClass("eagle");
+					}
+				break;
+				case -3:
+					if (par == 4) {
+						$(this).addClass("holeinone");
+					} else {
+						$(this).addClass("albatross");
+					}
+				break;
+				case -4:
+					if (par == 5) {
+						$(this).addClass("holeinone");
+					} else {
+						$(this).addClass("albatross");
+					}
+				break;
+				default: // > 3
+					$(this).addClass("manybogey");
+				break;
+			}
+		}
+	});
+}
+
 </script>

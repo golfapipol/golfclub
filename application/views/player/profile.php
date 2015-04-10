@@ -1,3 +1,7 @@
+<style>a:hover{cursor:pointer;}.modal-dialog { width: 80%; margin: 30px auto;}</style>
+<!-- ParColor -->
+<link href="<?php echo base_url();?>css/golfclub/parcolor.css" rel="stylesheet" type="text/css" />
+
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1>
@@ -72,12 +76,12 @@
 				</tr>
 				<?php 
 					if(sizeof($player_history) > 0):
-						$i=0;
+						$i=1;
 						foreach($player_history as $history):
-							echo '<tr><td>' . $i++ .'</td>';
-							echo '<td>' . $history['tour_name'] . '</td>';
-							echo '<td>' . $history['player_hc'] . '</td>';
-							echo '<td>' . $history['total_score'] . '</td></tr>';
+							echo '<tr><td><a onclick="viewHistoryScore('.$history['tour_id'].')">' . $i++ .'</a></td>';
+							echo '<td><a onclick="viewHistoryScore('.$history['tour_id'].')">' . $history['tour_name'] . '</a></td>';
+							echo '<td><a onclick="viewHistoryScore('.$history['tour_id'].')">' . $history['player_hc'] . '</a></td>';
+							echo '<td><a onclick="viewHistoryScore('.$history['tour_id'].')">' . $history['total_score'] . '</a></td></tr>';
 						endforeach;
 					else:
 						echo '<tr><td colspan="4">ไม่พบประวัติการเข้าร่วมการแข่งขัน</td></tr>';
@@ -87,3 +91,83 @@
 		</div><!-- /.box-body -->
 	</div>
 </section><!-- /.content -->
+<div class="modal fade in" id="player_summary" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+          <h4 class="modal-title" id="myLargeModalLabel">ประวัติการแข่งขันของคุณ <?php echo $player_data['player_name'];?><a class="anchorjs-link" href="#myLargeModalLabel"><span class="anchorjs-icon"></span></a></h4>
+        </div>
+        <div class="modal-body" id="modal-body">
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<script>
+	function viewHistoryScore(tourId) {
+		var player_id = '<?php echo $player_data['player_id']?>';
+		//ajax
+		var url = "<?php echo site_url("playerinfo/getPlayerHistory");?>" +"/"+ tourId + "/" + player_id;
+		$.ajax({
+			type:'POST',
+			url:url,
+			success:function(data){
+				$('#modal-body').html(data);
+				addColor();
+				$('#player_summary').modal({show:true});
+			}
+		});
+			
+	}
+	function addColor(){
+		$(".gross").each(function () {
+			var id = $(this).attr('id');
+			var par = $("#hole" + id).text();
+			var gross = $(this).text();
+			if (gross != "" && par != "") {
+				var number = parseInt(gross, 10) - parseInt(par, 10); 
+				switch(number) {
+					case 0:
+						$(this).addClass("par");
+					break;
+					case 1:
+						$(this).addClass("bogey");
+					break;
+					case 2:
+						$(this).addClass("doublebogey");
+					break;
+					case 3:
+						$(this).addClass("manybogey");
+					break;
+					case -1:
+						$(this).addClass("birdie");
+					break;
+					case -2:
+						if (par == 3) {
+							$(this).addClass("holeinone");
+						} else {
+							$(this).addClass("eagle");
+						}
+					break;
+					case -3:
+						if (par == 4) {
+							$(this).addClass("holeinone");
+						} else {
+							$(this).addClass("albatross");
+						}
+					break;
+					case -4:
+						if (par == 5) {
+							$(this).addClass("holeinone");
+						} else {
+							$(this).addClass("albatross");
+						}
+					break;
+					default: // > 3
+						$(this).addClass("manybogey");
+					break;
+				}
+			}
+		});
+	}
+</script>
