@@ -108,7 +108,7 @@ th{text-align:center}
 							<?php if($team_data->num_rows() > 0):
 								foreach($team_data->result_array() as $row):
 									echo '<tr><td>'.$row['team_name'].'</td>';
-									echo '<td><button type="button" class="btn btn-warning edit-team" data-toggle="tooltip" data-original-title="ดูรายละเอียด" value="'.$row['team_id'].'"><i class="fa fa-pencil"></i></button>
+									echo '<td><button type="button" class="btn btn-warning edit-team" data-toggle="tooltip" data-original-title="ดูรายละเอียด" onclick="edit_team_player('.$row['team_id'].')"><i class="fa fa-pencil"></i></button>
 										<button type="button" class="btn btn-danger " data-toggle="tooltip" data-original-title="ลบ" onclick="remove_list_team(this)" value="'.$row['team_id'].'"><i class="fa fa-times"></i></button></td></tr>';
 								endforeach;
 							endif;?>
@@ -148,25 +148,27 @@ th{text-align:center}
 				</div>
 				<form role="form">
 					<div class="box-body " >
-						<div id="team-info-body">
-						<h3>ทีม <div class="inline"></div><button type="button" class="btn btn-warning edit-team-info pull-right" data-toggle="tooltip" data-original-title="แก้ไขชื่อทีม" ><i class="fa fa-edit"></i></button></h3>
-						<input type="hidden" name="teamId" id="teamId" />
-						<br />
+						<div class="table-responsive">
+							<div id="team-info-body">
+							<h3>ทีม <div class="inline"></div><button type="button" class="btn btn-warning edit-team-info pull-right" data-toggle="tooltip" data-original-title="แก้ไขชื่อทีม" ><i class="fa fa-edit"></i></button></h3>
+							<input type="hidden" name="teamId" id="teamId" />
+							<br />
+							</div>
+							
+							<table id="team-player" class="table table-hover table-bordered" style="width:100%!important">
+								<thead style="background-color:#3c8dbc">
+									<tr>
+										<th style="width:40%!important">ชื่อ</th>
+										<th style="width:20%!important">อายุ</th>
+										<th style="width:15%!important">HC</th>
+										<th style="width:15%!important">เพศ</th>
+										<th style="width:15%!important">ตัวเลือก</th>
+									</tr>
+								</thead>
+								<tbody class="drop-team">
+								</tbody>
+							</table>
 						</div>
-						
-						<table id="team-player" class="table table-hover table-bordered">
-							<thead style="background-color:#3c8dbc">
-								<tr>
-									<th style="width:40%!important">ชื่อ</th>
-									<th style="width:20%!important">อายุ</th>
-									<th style="width:15%!important">HC</th>
-									<th style="width:15%!important">เพศ</th>
-									<th style="width:15%!important">ตัวเลือก</th>
-								</tr>
-							</thead>
-							<tbody class="drop-team">
-							</tbody>
-						</table>
 					</div>
 					<div class="box-footer clearfix">
 					</div>
@@ -270,7 +272,7 @@ th{text-align:center}
 											<div class="form-group">
 												<label for="InputHC">HC</label>
 												<select class="form-control" name="inputHC" id="inputHC">
-													<?php for($i=0;$i <= 36;$i++){
+													<?php for($i=0;$i <= 24;$i++){
 														if($i == 18){
 															echo '<option value="'.$i.'" selected>'.$i.'</option>';
 														}else{
@@ -364,7 +366,7 @@ th{text-align:center}
 				กรุณาเลือก Handicap
 				<select name="select_hc" id="select_hc">
 				<?php
-					for($i=0;$i <= 36;$i++){
+					for($i=0;$i <= 24;$i++){
 						if($i == 18){
 							echo '<option value="'.$i.'" selected>'.$i.'</option>';
 						}else{
@@ -422,40 +424,11 @@ $(".team-info").fadeOut();
 // Chosen 
 $(".chosen-select").chosen({no_results_text:'ไม่พบรายการที่ทำการค้นหา',width: '300px'});
 $(".add-team").click(function(){
+	$("#InputName").val("");
+	$("#InputName").next().hide();
 	$("#action-team").val(2);
 });
-$(".edit-team").click(function(){ 
-	// get data 
-	$("#teamId").val($(this).val());
-	$("#member_teamid").val($(this).val());
-	$("#teamid_nonmember").val($(this).val());
-	var url = "<?php echo site_url();?>/challenge/getTeamTable/"+$(this).val();
-	$.get( url, function() {})
-	.done(function(data) {
-		$("#team-info-body").html(data);
-		refresh_table_group_player();
-		$(".edit-team-info").off("click");
-		$(".edit-team-info").click(function(){
-			$(".team-info").find('.box').append('<div class="overlay"></div><div class="loading-img"></div>');
-			$("#action-team").val(3);
-			$("#editId").val($(this).val());
-			var team_name = $(this).parent().find('.inline').text();
-			$("#InputName").val(team_name);
-			$("#add-team-modal").modal('show');
-		});
-			$("#add-team-modal").modal('hide');
-			$(".group-table").fadeOut();
-			$(".add-team").fadeOut();
-			$(".team-info").fadeIn();
-			$(".player").fadeIn('slow');
-	
-	})
-	.fail(function() { 
-		$("#error").modal({ show:true});
-	});
-	
-	
-});
+
 $(".cancel-team-name").click(function(){
 	$("#action-team").val(2);
 	$(".team-info").find('.overlay').remove();
@@ -602,7 +575,35 @@ $(".drop-team").droppable({
 		refresh_table();
 	}
 });
-
+function edit_team_player(id) {
+	// get data 
+	$("#teamId").val(id);
+	$("#member_teamid").val(id);
+	$("#teamid_nonmember").val(id);
+	var url = "<?php echo site_url();?>/challenge/getTeamTable/"+id;
+	$.get( url, function() {})
+	.done(function(data) {
+		$("#team-info-body").html(data);
+		refresh_table_group_player();
+		$(".edit-team-info").off("click");
+		$(".edit-team-info").click(function(){
+			$(".team-info").find('.box').append('<div class="overlay"></div><div class="loading-img"></div>');
+			$("#action-team").val(3);
+			$("#editId").val($(this).val());
+			var team_name = $(this).parent().find('.inline').text();
+			$("#InputName").val(team_name);
+			$("#add-team-modal").modal('show');
+		});
+			$("#add-team-modal").modal('hide');
+			$(".group-table").fadeOut();
+			$(".add-team").fadeOut();
+			$(".team-info").fadeIn();
+			$(".player").fadeIn('slow');
+	})
+	.fail(function() { 
+		$("#error").modal({ show:true});
+	});
+}
 function member_add_team(){
 	table_member.fnDestroy();
 	var num_insert = $(".checked").length;
@@ -646,22 +647,26 @@ function member_add_team(){
 	refresh_table();
 }
 function people_add_team(){
-	var url = "<?php echo site_url();?>/challenge/player_control/1/<?php echo $tournament_data['tour_id'];?>";
-		$.ajax({
-			type:"post",
-			url: url,
-			cache: false,
-			data: $('#non-member-form').serialize(),
-			success: function(json){
-				//alert(json);
-				refresh_table_group_player();
-			},
-			error: function(request, status, error) {
-				$("#add-modal").modal('hide');
-				$("#error").modal({ show:true});
-			}
-		});
-	$("#inputName").val("");
+	if($("#inputName").val()){
+		var url = "<?php echo site_url();?>/challenge/player_control/1/<?php echo $tournament_data['tour_id'];?>";
+			$.ajax({
+				type:"post",
+				url: url,
+				cache: false,
+				data: $('#non-member-form').serialize(),
+				success: function(json){
+					//alert(json);
+					refresh_table_group_player();
+				},
+				error: function(request, status, error) {
+					$("#add-modal").modal('hide');
+					$("#error").modal({ show:true});
+				}
+			});
+		$("#inputName").val("");
+	} else {
+		alert("กรุณากรอกชื่อ");
+	}
 }
 function remove_list_group(object){
 	var id = $(object).val();
@@ -712,37 +717,6 @@ function refresh_table_team(){
 			table_group = $("#group").dataTable({
 				"bLengthChange": false,
 				"bSort": true
-			});
-			
-			$(".edit-team").off("click");
-			$(".edit-team").click(function(){ 
-				// get data 
-				$("#teamId").val($(this).val());
-				$("#member_teamid").val($(this).val());
-				$("#teamid_nonmember").val($(this).val());
-				var url = "<?php echo site_url();?>/challenge/getTeamTable/"+$(this).val();
-				$.get( url, function() {})
-				.done(function(data) {
-					$("#team-info-body").html(data);
-					refresh_table_group_player();
-					$(".edit-team-info").off("click");
-					$(".edit-team-info").click(function(){
-						$(".team-info").find('.box').append('<div class="overlay"></div><div class="loading-img"></div>');
-						$("#action-team").val(3);
-						$("#editId").val($(this).val());
-						var team_name = $(this).parent().find('.inline').text();
-						$("#InputName").val(team_name);
-						$("#add-team-modal").modal('show');
-					});
-					$("#add-team-modal").modal('hide');
-					$(".group-table").fadeOut();
-					$(".add-team").fadeOut();
-					$(".team-info").fadeIn();
-					$(".player").fadeIn('slow');
-				})
-				.fail(function() { 
-					$("#error").modal({ show:true});
-				});
 			});
 		})
 		.fail(function() { 

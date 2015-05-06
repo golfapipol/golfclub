@@ -192,6 +192,7 @@ class ExportFile extends Required {
 		$data['field_data'] = $this->tour_field_model->getFieldByTourId($tourId)->result_array();
 		$content = $this->load->view('exportFile/scoring', $data, true);
 		echo $content;
+		
 	}
 }
 

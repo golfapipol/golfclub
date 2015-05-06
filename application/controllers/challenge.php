@@ -235,8 +235,8 @@ class Challenge extends Required {
 				if ($team_data->num_rows() > 0):
 					foreach ($team_data->result_array() as $row):
 						echo '<tr><td>'.$row['team_name'].'</td>';
-						echo '<td><button type="button" class="btn btn-warning edit-team" data-toggle="tooltip" data-original-title="ดูรายละเอียด" value="' . $row['team_id'] . '"><i class="fa fa-pencil"></i></button>
-							<button type="button" class="btn btn-danger " data-toggle="tooltip" data-original-title="ลบ" onclick="remove_list_team(this)" value="' . $row['team_id'] . '"><i class="fa fa-times"></i></button></td></tr>';
+						echo '<td><button type="button" class="btn btn-warning edit-team" data-toggle="tooltip" data-original-title="ดูรายละเอียด" onclick="edit_team_player('.$row['team_id'].')"><i class="fa fa-pencil"></i></button>
+							<button type="button" class="btn btn-danger " data-toggle="tooltip" data-original-title="ลบ" onclick="remove_list_team(this)" value="'.$row['team_id'].'"><i class="fa fa-times"></i></button></td></tr>';
 					endforeach;
 				endif;
 				break;
@@ -304,10 +304,11 @@ class Challenge extends Required {
 				$Time = explode(" - ",$InputTime);	
 				$TimeStart = explode("-",$Time[0]);
 				$TimeEnd = explode("-",$Time[1]);
-				$this->tournament_model->insert($InputName,
+				$tour_id = $this->tournament_model->insert($InputName,
 												$TimeStart[2] . "-" . $TimeStart[1] . "-" . $TimeStart[0],
 												$TimeEnd[2] . "-" . $TimeEnd[1] . "-" . $TimeEnd[0],
 												$InputClub);
+				echo $tour_id;
 				break;
 			case 2://update
 				
@@ -328,7 +329,6 @@ class Challenge extends Required {
 				break;
 			case 3://delete
 				$InputId = $_POST['InputId'];
-				echo $InputId;
 				$this->tournament_model->delete($InputId);
 				break;
 			case 4:// edit get select

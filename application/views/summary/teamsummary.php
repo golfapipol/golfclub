@@ -1,4 +1,4 @@
-<style>.flightinput{width:70%;text-align:center} a:hover{cursor:pointer;}  .modal-dialog { width: 80%; margin: 30px auto;}</style>
+<style>#scoreboard > tbody > tr:hover{ cursor:pointer;backgroud-color:black;}.flightinput{width:70%;text-align:center} a:hover{cursor:pointer;}  .modal-dialog { width: 80%; margin: 30px auto;}</style>
 <!-- ParColor -->
 <link href="<?php echo base_url();?>css/golfclub/parcolor.css" rel="stylesheet" type="text/css" />
 <!-- Content Header (Page header) -->
@@ -62,8 +62,17 @@
 						<?php 
 							if (count($team_data) > 0):
 								$i = 1;
+								function orderBy($data, $field) //http://www.the-art-of-web.com/php/sortarray/
+								{
+									$code = "return strnatcmp(\$a['$field'], \$b['$field']);";
+									usort($data, create_function('$a,$b', $code));
+									return $data;
+								}
+
+								$team_data = orderBy($team_data, 'team_score');
+								
 								foreach($team_data as $team):
-									echo '<tr><td><a class="team" value="'. $team['team_id'].'">'.$i++.'</a></td><td><a class="team" value="'. $team['team_id'].'">'. $team['team_name'] .'</a></td><td><a class="team" value="'. $team['team_id'].'">'. $team['team_score'] .'</a></td></tr>';
+									echo '<tr onclick="team_scorecard('. $team['team_id'].')"><td>'.$i++.'</td><td>'. $team['team_name'] .'</td><td>'. $team['team_score'] .'</td></tr>';
 								endforeach;
 							else:
 								echo '<tr><td colspan="3">ไม่พบข้อมูลผลการแข่งขัน</td></tr>';
@@ -92,8 +101,8 @@
   </div>
 
 <script>
-$('.team').click(function () {
-	var value = $(this).attr('value');
+function team_scorecard(team_id){
+	var value = team_id;
 	var url = "<?php echo site_url('summary/getTeamSummary');?>/" + value;
 	$.get( url, function() {})
 	.done(function(data) {
@@ -102,11 +111,11 @@ $('.team').click(function () {
 		addColor();
 		$('#team_summary').modal('show');
 	});
-});
+}
 var table = $("#scoreboard").dataTable({
-				"bLengthChange": false,
-				"bSort": true,"aaSorting": [[ 3, "asc" ]]
-			});
+	"aaSorting": [],
+	"aoColumns": [{ "sType": "numeric" }, null, { "sType": "numeric" }]
+});
 function addColor(){
 	$(".gross").each(function () {
 		var id = $(this).attr('id');

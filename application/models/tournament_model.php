@@ -19,6 +19,7 @@ class Tournament_model extends MyModel {
 				VALUE( 0, ?, ?, ?, ? )";
 		$this->db->query($sql, array($name, $start, $end, $clubId));
 		$this->last_insert_id = $this->db->insert_id();
+		return $this->last_insert_id;
 	}
 	public function update($id,$name,$start,$end,$clubId){
 		$sql = "UPDATE tournament 
@@ -34,6 +35,18 @@ class Tournament_model extends MyModel {
 									$id));
 	}
 	public function delete($id){
+		$sql = "DELETE FROM flight WHERE tour_id = ?";
+		$this->db->query($sql,array($id));
+		$sql = "DELETE FROM score WHERE tour_id = ?";
+		$this->db->query($sql,array($id));
+		$sql = "DELETE FROM pairing WHERE tour_id = ?";
+		$this->db->query($sql,array($id));
+		$sql = "DELETE FROM tour_player WHERE tour_id = ?";
+		$this->db->query($sql,array($id));
+		$sql = "DELETE FROM tour_field WHERE tour_id = ?";
+		$this->db->query($sql,array($id));
+		$sql = "DELETE FROM tour_team WHERE tournament_tour_id = ?";
+		$this->db->query($sql,array($id));		
 		$sql = "DELETE FROM tournament WHERE tour_id = ?";
 		$this->db->query($sql,array($id));
 	}

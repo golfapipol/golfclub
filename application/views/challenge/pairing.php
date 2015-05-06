@@ -126,6 +126,7 @@
 						</div>
 						<div class="col-md-9 col-xs-9">
 							<div class="row" id="group-row">
+								<h4>ก๊วน</h4>
 								<ul class="pagination inline" id="group">
 									
 								</ul>
@@ -185,7 +186,7 @@
 							endif;
 						?>
 					
-					<table id="people" class="table table-hover table-bordered">
+					<table id="people" class="table table-hover table-bordered"  style="width:100%!important">
 						<thead style="background-color:#3c8dbc">
 							<tr>
 								<th style="width:5%!important"></th>

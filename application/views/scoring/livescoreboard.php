@@ -18,7 +18,7 @@
 		  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 		  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 		<![endif]-->
-		<style>body { font-size:60px} th { text-align:center;} td { text-align:center;} .tab_hover{ background: red!important; } .error { color:red} .required{ color:red} .big{font-size:x-large} .male {color:#22A7F0} .female {color:#9A12B3}
+		<style> th { text-align:center;} td { text-align:center;} .tab_hover{ background: red!important; } .error { color:red} .required{ color:red} .big{font-size:x-large} .male {color:#22A7F0} .female {color:#9A12B3}
 		</style>
 		<!-- jQuery 2.0.2 -->
 		<script src="<?php echo base_url();?>js/jquery.min.js"></script>
@@ -33,7 +33,7 @@
 		<!-- JQuery Validate -->
 		<script src="<?php echo base_url();?>js/plugins/jqueryValidate/jquery.validate.min.js" type="text/javascript"></script>
     </head>
-	<body class="skin-blue fixed container">
+	<body class="skin-blue fixed">
 		<div class="content">
 			<div class="box">
 				<div class="box-header">
@@ -43,7 +43,7 @@
 					<table class="table table-condensed" id="scoreboard">
 						<thead>
 							<tr>
-								<th style="width: 10px">No.</th>
+								<th>No.</th>
 								<th>Name</th>
 								<th>Team</th>
 								<th>HC</th>
@@ -57,7 +57,7 @@
 							<?php 
 								$i = 1;
 							foreach($livescore as $row) :
-								echo '<tr><td>' . $i++ . '</td>';
+								echo '<tr><td >' . $i++ . '</td>';
 								echo '<td>' . $row["player_name"] . '</td>';
 								echo '<td>' . $row['team_name'] . '</td>';
 								echo '<td>' . $row["player_hc"] . '</td>';

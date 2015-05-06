@@ -1,4 +1,4 @@
-<style>.flightinput{width:70%;text-align:center} .modal-dialog { width: 80%; margin: 30px auto;} a:hover{cursor:pointer;}</style>
+<style>#scoreboard > tbody > tr:hover{ cursor:pointer;backgroud-color:black;}.flightinput{width:70%;text-align:center} .modal-dialog { width: 80%; margin: 30px auto;} a:hover{cursor:pointer;}</style>
 <!-- ParColor -->
 <link href="<?php echo base_url();?>css/golfclub/parcolor.css" rel="stylesheet" type="text/css" />
 <!-- Content Header (Page header) -->
@@ -93,31 +93,53 @@
 							<th>OUT</th>
 							<th>IN</th>
 							<th>Gross Score</th>
-							<th>Net Score</th>
+							<?php if($tournament['tour_scoretype'] == 1):
+								echo '<th>Net Score</th>';
+							elseif($tournament['tour_scoretype'] == 2):
+								echo '<th>Stableford Score</th>';
+							endif;?>
 						</tr>
 						</thead>
 						<tbody>
 						<?php 
 							$i = 1;
+							function orderBy($data, $field) //http://www.the-art-of-web.com/php/sortarray/
+							{
+								$code = "return strnatcmp(\$a['$field'], \$b['$field']);";
+								usort($data, create_function('$a,$b', $code));
+								return $data;
+							}
+
+							$player_data = orderBy($player_data, 'in');
+							$player_data = orderBy($player_data, 'total_score');
+							$player_data = orderBy($player_data, 'player_hc');
+							$player_data = orderBy($player_data, 'net_score');
+							if($tournament['tour_scoretype'] == 1):
+								// do nothing
+							elseif($tournament['tour_scoretype'] == 2):
+								$player_data = array_reverse($player_data);
+							endif;
 							foreach($player_data as $player):
-								echo '<tr><td><a class="player" value="'.$player['player_id'].'">' . $i++ . '</a></td>';
-								echo '<td><a class="player" value="'.$player['player_id'].'">'. $player['player_name'] . '</a></td>';
-								foreach($flights as $flight):
-									if (($flight['flight_startrange'] <= $player['player_hc']) && ($flight['flight_endrange'] >= $player['player_hc'])):
-										if($tournament['tour_flightdivide'] == 1):
-											echo '<td><a class="player" value="'.$player['player_id'].'">'.$flight['flight_name'].'</a></td><td style="display:none">'.$flight['flight_id'].'</td>';
-										elseif($tournament['tour_flightdivide']== 2 && ($flight['flight_type'] == $player['player_sex'])):
-											echo ($flight['flight_type'] == 1)? '<td><a class="player" value="'.$player['player_id'].'">ชาย'.$flight['flight_name'].'</a></td>': '<td><a class="player" value="'.$player['player_id'].'">หญิง'.$flight['flight_name'].'</a></td>';
-											echo '<td><a class="player" value="'.$player['player_id'].'">'.$flight['flight_id'].'</a></td>';
+								if($player['in'] != 0 && $player['out'] != 0):
+									echo '<tr onclick="player_scorecard('.$player['player_id'].')"><td>' . $i++ . '</td>';
+									echo '<td>'. $player['player_name'] . '</a></td>';
+									foreach($flights as $flight):
+										if (($flight['flight_startrange'] <= $player['player_hc']) && ($flight['flight_endrange'] >= $player['player_hc'])):
+											if($tournament['tour_flightdivide'] == 1):
+												echo '<td>'.$flight['flight_name'].'</td><td style="display:none">'.$flight['flight_id'].'</td>';
+											elseif($tournament['tour_flightdivide']== 2 && ($flight['flight_type'] == $player['player_sex'])):
+												echo ($flight['flight_type'] == 1)? '<td>ชาย'.$flight['flight_name'].'</td>': '<td>หญิง'.$flight['flight_name'].'</td>';
+												echo '<td>'.$flight['flight_id'].'</td>';
+											endif;
+											break;
 										endif;
-										break;
-									endif;
-								endforeach;
-								echo '<td><a class="player" value="'.$player['player_id'].'">' . $player['player_hc'] . '</a></td>';
-								echo '<td><a class="player" value="'.$player['player_id'].'">' . $player['out'] . '</a></td>';
-								echo '<td><a class="player" value="'.$player['player_id'].'">' . $player['in'] . '</a></td>';
-								echo '<td><a class="player" value="'.$player['player_id'].'">' . $player['total_score'] . '</a></td>';
-								echo '<td><a class="player" value="'.$player['player_id'].'">' . $player['net_score'] . '</a></td></tr>';
+									endforeach;
+									echo '<td>' . $player['player_hc'] . '</td>';
+									echo '<td>' . $player['out'] . '</td>';
+									echo '<td>' . $player['in'] . '</td>';
+									echo '<td>' . $player['total_score'] . '</td>';
+									echo '<td>' . $player['net_score'] . '</td></tr>';
+								endif;
 							endforeach;
 						?>
 					</tbody></table>
@@ -218,9 +240,9 @@
   </div>
  <script>
 var table = $("#scoreboard").dataTable({
-				"bLengthChange": false,
-				"bSort": true//,"aaSorting": [[ 3, "desc" ]]
-			});
+	"aaSorting": [],
+	"aoColumns": [{ "sType": "numeric" }, null, null, null, { "sType": "numeric" }, { "sType": "numeric" }, { "sType": "numeric" }, { "sType": "numeric" }, { "sType": "numeric" }]
+});
 			
 $('.filter').click(function(e){
 	$('.filter').each(function(){
@@ -235,9 +257,8 @@ $('.filter').click(function(e){
 	}
 	//
 });
-
-$('.player').click(function () {
-	var value = $(this).attr('value');
+function player_scorecard(playerid){
+	var value = playerid;
 	var url = "<?php echo site_url('summary/getPlayerSummary');?>/" + value + "/<?php echo $tournament['tour_id'];?>";
 	$.get( url, function() {})
 	.done(function(data) {
@@ -246,8 +267,7 @@ $('.player').click(function () {
 		addColor();
 		$('#player_summary').modal('show');
 	});
-	
-});
+}
 function addColor(){
 	$(".gross").each(function () {
 		var id = $(this).attr('id');

@@ -24,12 +24,13 @@
 			<div class="row">
 				<div class="col-md-3 col-lg-3 hidden-xs hidden-sm">
 					<img class="img-circle"
-						 src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100"
+						 src="<?php echo base_url('img/user_pic.png')?>"
 						 alt="User Pic">
 				</div>
 				<div class="col-xs-2 col-sm-2 hidden-md hidden-lg">
 					<img class="img-circle"
-						 src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=50"
+						 src="<?php echo base_url('img/user_pic.png')?>"
+						 width="80%"
 						 alt="User Pic">
 				</div>
 				
@@ -55,11 +56,11 @@
 			</div>
 		</div>
 		<div class="box-footer clearfix">
-			<span class="pull-right">
+			<!--span class="pull-right">
 				<button class="btn btn-sm btn-info" type="button"
 						data-toggle="tooltip"
 						data-original-title="พิมพ์โปรไฟล์นักกีฬา"><i class="glyphicon glyphicon-print"></i></button>
-			</span>
+			</span-->
 		</div>
 	</div>
 	<div class="box">

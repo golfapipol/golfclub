@@ -91,7 +91,7 @@ class Pairing_model extends MyModel {
 				INNER JOIN tour_player
 				ON pairing.player_id = tour_player.player_id
 				INNER JOIN tour_field
-				ON pairing.tour_id = tour_field.tour_field_id
+				ON pairing.field_id = tour_field.tour_field_id
 				WHERE pairing.tour_id = ?
 				ORDER BY field_seq, hole, pairing.group";
 		$query = $this->db->query($sql, array($tour_id));

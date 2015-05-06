@@ -1,7 +1,7 @@
 <section class="content-header">
 	<h1>
 		รายการแข่งขัน
-		<small>Challenges</small>
+		<small>Tournament</small>
 	</h1>
 	<ol class="breadcrumb">
 		<li><a href="<?php echo site_url('home')?>"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -247,12 +247,14 @@ function jqueryon()
 					url: url,
 					cache: false,
 					data: $('#addform').serialize(),
-					success: function(data){
-						//alert(data);
+					success: function(tourid){
 						$("#add-modal").modal('hide');
 						$("#message").modal({ show:true});
 						//refresh data table
 						refresh_table();
+						if ($("#action").val() == 1) {
+							window.location.href = "<?php echo site_url('challenge/tourinfo');?>/" + tourid;
+						}
 					},
 					error: function(request, status, error) {
 						$("#add-modal").modal('hide');

@@ -40,7 +40,9 @@ class Calculate_score_model extends MyModel {
 				INNER JOIN tour_team
 				ON tour_team.team_id = tour_player.team_id
 				WHERE tour_player.team_id = ?
+				AND gross_score != 0
 				GROUP BY score.player_id
+				ORDER BY sum(gross_score)
 				Limit ".$limit;
 		$query = $this->db->query($sql, array($team_id));
 		$sum_score = 0;

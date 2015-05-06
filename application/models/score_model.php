@@ -67,7 +67,7 @@ class Score_model extends MyModel {
 				LEFT JOIN tour_team ON tour_player.team_id = tour_team.team_id
 				WHERE score.tour_id = ?
 				GROUP BY (score.player_id) 
-				ORDER BY total_score desc
+				ORDER BY total_score
 				Limit 10";
 		$query = $this->db->query($sql, array($tour_id));
 		return $query;
@@ -79,7 +79,7 @@ class Score_model extends MyModel {
 				LEFT JOIN tour_team ON tour_player.team_id = tour_team.team_id
 				WHERE score.tour_id = ?
 				GROUP BY (score.player_id) 
-				ORDER BY net_score desc,total_score desc, player_hc ";
+				ORDER BY net_score,total_score, player_hc ";
 		$query = $this->db->query($sql, array($tour_id));
 		return $query;
 	}
@@ -97,7 +97,7 @@ class Score_model extends MyModel {
 				LEFT JOIN tour_team ON tour_player.team_id = tour_team.team_id
 				WHERE score.tour_id = ?
 				GROUP BY (score.player_id) 
-				ORDER BY team_id,total_score desc ";
+				ORDER BY team_id,total_score";
 		$query = $this->db->query($sql, array($tour_id));
 		return $query;
 	}
@@ -112,7 +112,7 @@ class Score_model extends MyModel {
 					GROUP BY (score.player_id) 
 				) as players_score
 				GROUP BY (team_id)
-				ORDER BY (team_score) desc";
+				ORDER BY (team_score)";
 		$query = $this->db->query($sql, array($tour_id));
 		return $query;
 	}

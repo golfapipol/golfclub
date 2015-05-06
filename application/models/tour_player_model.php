@@ -134,9 +134,25 @@ class Tour_player_model extends MyModel {
 		return $query;
 	}
 	public function getPlayerByTeamId($id) {
-		$sql = "SELECT * 
-				FROM tour_player 
-				WHERE team_id = ?";
+		$sql = "SELECT * , sum(gross_score) as gross_score
+				FROM tour_player
+				INNER JOIN score
+				ON tour_player.player_id = score.player_id
+				WHERE team_id = ?
+				GROUP BY score.player_id
+				HAVING sum(gross_score) > 0
+				ORDER BY sum(gross_score)";
+		$query = $this->db->query($sql, array($id));
+		return $query;
+	}
+	public function getPlayerNotSubmitScoreByTeamId($id){
+		$sql = "SELECT * , sum(gross_score) as gross_score
+				FROM tour_player
+				INNER JOIN score
+				ON tour_player.player_id = score.player_id
+				WHERE team_id = ?
+				GROUP BY score.player_id
+				HAVING sum(gross_score) = 0";
 		$query = $this->db->query($sql, array($id));
 		return $query;
 	}

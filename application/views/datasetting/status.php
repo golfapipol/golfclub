@@ -157,6 +157,7 @@
 		$(".submit").off("click");
 		$(".add").click(function(){
 			$("#action").val(1);
+			$("#InputName").val("");
 		});
 		$(".edit").click(function(){
 			var id = $(this).val();

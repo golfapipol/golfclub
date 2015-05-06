@@ -15,7 +15,7 @@ tr:hover { cursor: pointer;}
 
 <!-- Main content -->
 <section class="content">
-	<h4 class="page-header">คำนำหน้าชื่อ</h4>
+	<h4 class="page-header">ข้อมูลสนามกอล์ฟ</h4>
 	<div class="box box-primary" >
 		<div class="box-header">
 			<h3 class="box-title">รายชื่อสนามกอล์ฟทั้งหมด</h3>

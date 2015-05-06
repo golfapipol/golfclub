@@ -45,6 +45,7 @@ class Ums extends Required {
 				break;
 			case 3: // delete
 				$InputId =  $_POST['InputId'];
+				$this->permission_model->deleteByMenuId($InputId);
 				$this->menu_model->delete($InputId);
 				break;
 			case 0: // get all	

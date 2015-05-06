@@ -23,6 +23,11 @@ class Permission_model extends MyModel {
 				AND group_id = ?";
 		$this->db->query($sql, array($menu, $group));
 	}
+	public function deleteByMenuId($menu) {
+		$sql = "DELETE FROM permission 
+				WHERE menu_id = ?";
+		$this->db->query($sql, array($menu));
+	}
 	public function getAll() {
 		$sql = "SELECT * FROM permission ";
 		$query = $this->db->query($sql);

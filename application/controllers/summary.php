@@ -230,6 +230,7 @@ class Summary extends Required {
 		$team_data = $this->tour_team_model->getByTeamId($team_id)->row_array();
 		$field_data = $this->tour_field_model->getFieldByTourId($team_data['tournament_tour_id']);
 		$player_data = $this->tour_player_model->getPlayerByTeamId($team_id);
+		$not_submit_score_player_data = $this->tour_player_model->getPlayerNotSubmitScoreByTeamId($team_id);
 		header ('Content-type: text/html; charset=utf-8');
 		echo '<h1>'.$team_data['team_name'].'</h1>';
 		echo '<table class="table table-bordered">';
@@ -308,6 +309,48 @@ class Summary extends Required {
 				endif;
 			endforeach;
 		endforeach;
+		foreach ($not_submit_score_player_data->result_array() as $player):
+			echo '<tr><td>'.$player['player_name'].'</td>';
+			$field_seq = 1; $Score =0;
+			foreach ($field_data->result_array() as $row):
+				$scorecard = $this->tour_player_model->getScoreCardByPlayerId($player['player_id'], $row['field_id'], $team_data['tournament_tour_id']);
+				if ($scorecard->num_rows() == 1):
+					$scorecard = $scorecard->row_array();
+					for ($i = (($row['field_seq']) * 9 - 8); $i <= (($row['field_seq']) * 9); $i++):
+						$holeNo = $i % 9;
+						if ($holeNo == 0) :
+							echo '<td class="gross" id="'.$i.'">'. $scorecard['hole9_score'] . '</td>';
+						else:
+							echo '<td class="gross" id="'.$i.'">'. $scorecard['hole' . $holeNo . '_score'] . '</td>';
+						endif;
+					endfor;
+					if ($field_seq == 1):
+						$Score = $scorecard['gross_score'];
+						echo '<td>'.$Score.'</td>';
+						$field_seq++;
+					else:
+						$total = $Score;
+						$Score = $scorecard['gross_score'];
+						$total = $total + $Score;
+						echo '<td>'.$Score.'</td>';
+						echo '<td>'.$player['player_hc'].'</td><td>'.$total.'</td></tr>';
+					endif;
+				else:
+					for ($i = (($row['field_seq']) * 9 - 8); $i <= (($row['field_seq']) * 9); $i++):
+						echo '<td></td>';
+					endfor;
+					if ($field_seq == 1):
+						$Score = 0;
+						echo '<td>'.$Score.'</td>';
+						$field_seq++;
+					else:
+						$total = $Score;
+						echo '<td>'.$Score.'</td>';
+						echo '<td>'.$player['player_hc'].'</td><td style="background-color:#F4FA58">'.$total.'</td></tr>';
+					endif;
+				endif;
+			endforeach;
+		endforeach;
 		echo '</table>';
 		echo '<table class="table table-bordered"><tr><td class="manybogey">&nbsp;</td><td>More</td><td class="doublebogey">&nbsp;</td><td>Double Bogey</td><td class="bogey">&nbsp;</td><td>Bogey</td><td class="par">&nbsp;</td><td>par</td><td class="birdie">&nbsp;</td><td>Birdie</td><td class="eagle">&nbsp;</td><td>Eagle</td><td class="albatross">&nbsp;</td><td>Albatross</td><td class="holeinone">&nbsp;</td><td>Hole in One</td></tr></table>';
 	}
@@ -343,7 +386,12 @@ class Summary extends Required {
 		endforeach;
 		return $player_data;
 	}
-	
+	function orderBy($data, $field) //http://www.the-art-of-web.com/php/sortarray/
+	{
+		$code = "return strnatcmp(\$a['$field'], \$b['$field']);";
+		usort($data, create_function('$a,$b', $code));
+		return $data;
+	}
 	
 }
 
